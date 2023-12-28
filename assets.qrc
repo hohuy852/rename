@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>resource/icons8-rename-50.png</file>
+    <file>resource/icons8-export-50.png</file>
+    <file>resource/icons8-import-50.png</file>
+    <file>resource/icons8-open-file-50.png</file>
+    <file>resource/icons8-save-50.png</file>
+  </qresource>
+</RCC>
