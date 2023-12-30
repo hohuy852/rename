@@ -1,9 +1,10 @@
 import sys
 import os
 import openpyxl
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog,QInputDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog,QInputDialog,QHeaderView
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QStandardItemModel, QStandardItem, QPixmap
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt5.QtCore import Qt
 from rename import Ui_MainWindow
 
 class MainWindow(QMainWindow):
@@ -40,7 +41,11 @@ class MainWindow(QMainWindow):
 
         # Set up table headers
         self.model.setHorizontalHeaderLabels(["Path", "Name", "New Name"])
-
+        # Set header width to 33% for each column
+        header = self.table_view.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.Stretch)  # Path column takes the remaining space
+        header.setSectionResizeMode(1, QHeaderView.ResizeToContents)  # Name column adjusts to content
+        header.setSectionResizeMode(2, QHeaderView.ResizeToContents)  # New Name column adjusts to content
         # Recursively iterate through the folder contents
         self.add_folders_to_model(folder_path)
 
