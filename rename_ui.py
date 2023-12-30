@@ -80,7 +80,9 @@ class Ui_MainWindow(object):
         self.open_btn.setObjectName(u"open_btn")
         self.open_btn.setMinimumSize(QSize(50, 50))
         self.open_btn.setMaximumSize(QSize(60, 60))
-        self.open_btn.setIcon(icon)
+        icon4 = QIcon()
+        icon4.addFile(u"resource/icons8-open-file-50.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.open_btn.setIcon(icon4)
 
         self.open_layout.addWidget(self.open_btn)
 
@@ -102,7 +104,9 @@ class Ui_MainWindow(object):
         self.save_btn.setObjectName(u"save_btn")
         self.save_btn.setMinimumSize(QSize(50, 50))
         self.save_btn.setMaximumSize(QSize(60, 60))
-        self.save_btn.setIcon(icon1)
+        icon5 = QIcon()
+        icon5.addFile(u"resource/icons8-save-50.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.save_btn.setIcon(icon5)
 
         self.save_layout.addWidget(self.save_btn)
 
@@ -124,7 +128,9 @@ class Ui_MainWindow(object):
         self.import_btn.setObjectName(u"import_btn")
         self.import_btn.setMinimumSize(QSize(50, 50))
         self.import_btn.setMaximumSize(QSize(60, 60))
-        self.import_btn.setIcon(icon3)
+        icon6 = QIcon()
+        icon6.addFile(u"resource/icons8-import-50.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.import_btn.setIcon(icon6)
 
         self.import_layout.addWidget(self.import_btn)
 
@@ -146,7 +152,9 @@ class Ui_MainWindow(object):
         self.export_btn.setObjectName(u"export_btn")
         self.export_btn.setMinimumSize(QSize(50, 50))
         self.export_btn.setMaximumSize(QSize(60, 60))
-        self.export_btn.setIcon(icon2)
+        icon7 = QIcon()
+        icon7.addFile(u"resource/icons8-export-50.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.export_btn.setIcon(icon7)
 
         self.export_layout.addWidget(self.export_btn)
 
@@ -168,9 +176,9 @@ class Ui_MainWindow(object):
         self.rename_btn.setObjectName(u"rename_btn")
         self.rename_btn.setMinimumSize(QSize(50, 50))
         self.rename_btn.setMaximumSize(QSize(60, 60))
-        icon4 = QIcon()
-        icon4.addFile(u":/icons/resource/icons8-rename-50.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.rename_btn.setIcon(icon4)
+        icon8 = QIcon()
+        icon8.addFile(u"resource/icons8-rename-50.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.rename_btn.setIcon(icon8)
 
         self.rename_layout.addWidget(self.rename_btn)
 

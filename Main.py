@@ -3,8 +3,7 @@ import os
 import openpyxl
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog,QInputDialog
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
-
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QPixmap
 from rename import Ui_MainWindow
 
 class MainWindow(QMainWindow):
@@ -52,7 +51,6 @@ class MainWindow(QMainWindow):
                 item_path = os.path.normpath(os.path.join(root, name))
                 item.setData(item_path, Qt.UserRole + 1)  # Save path in UserRole+1
                 self.model.appendRow([QStandardItem(item_path), item])
-
     def rename_folders(self):
         items = self.get_sorted_items_by_depth()
         
@@ -123,34 +121,33 @@ class MainWindow(QMainWindow):
     def import_xlsx(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Open Excel File", "", "Excel Files (*.xlsx)")
         if file_path:
-            # Load the Excel workbook
             workbook = openpyxl.load_workbook(file_path)
             sheet = workbook.active
 
-            # Print headers for debugging
             headers = [cell.value for cell in sheet[1]]
 
-            # Clear existing items from the model
             self.model.clear()
 
-            # Set up table headers
             self.model.setHorizontalHeaderLabels(headers)
 
-            # Populate the model with data from the Excel file
+            items = []
             for row in sheet.iter_rows(min_row=2, values_only=True):
-                # Ensure the "New Name" column has a value (replace None with a default value)
                 new_name_value = row[2] if row[2] is not None else ""
 
-                # Create QStandardItem objects for each cell in the row
+                # Set the data for the new item
+                path_item = QStandardItem(str(row[1]))
+                path_item.setData(str(row[0]), Qt.UserRole + 1)  # Set the path in UserRole+1
+                items.append(path_item)
+
                 row_items = [
                     QStandardItem(str(row[0])),  # "Path" column
-                    QStandardItem(str(row[1])),  # "Name" column
+                    path_item,  # "Name" column
                     QStandardItem(str(new_name_value))  # "New Name" column
                 ]
-                # Append the row items to the model
                 self.model.appendRow(row_items)
 
-            # Close the workbook
+            # No sorting here
+
             workbook.close()
         
 if __name__ == '__main__':
