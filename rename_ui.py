@@ -66,17 +66,17 @@ class Ui_MainWindow(object):
         self.tools.setStyleSheet(u"background-color: rgb(195, 195, 195);")
         self.tools.setFrameShape(QFrame.StyledPanel)
         self.tools.setFrameShadow(QFrame.Raised)
-        self.verticalLayoutWidget = QWidget(self.tools)
-        self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(20, 0, 52, 91))
-        self.open_layout = QVBoxLayout(self.verticalLayoutWidget)
-        self.open_layout.setObjectName(u"open_layout")
-        self.open_layout.setContentsMargins(0, 0, 0, 0)
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.open_layout.addItem(self.verticalSpacer)
-
-        self.open_btn = QPushButton(self.verticalLayoutWidget)
+        self.horizontalLayout_2 = QHBoxLayout(self.tools)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.frame = QFrame(self.tools)
+        self.frame.setObjectName(u"frame")
+        self.frame.setMinimumSize(QSize(0, 0))
+        self.frame.setMaximumSize(QSize(200, 16777215))
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_3 = QHBoxLayout(self.frame)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.open_btn = QPushButton(self.frame)
         self.open_btn.setObjectName(u"open_btn")
         self.open_btn.setMinimumSize(QSize(50, 50))
         self.open_btn.setMaximumSize(QSize(60, 60))
@@ -84,23 +84,13 @@ class Ui_MainWindow(object):
         icon4.addFile(u"resource/icons8-open-file-50.png", QSize(), QIcon.Normal, QIcon.Off)
         self.open_btn.setIcon(icon4)
 
-        self.open_layout.addWidget(self.open_btn)
+        self.horizontalLayout_3.addWidget(self.open_btn)
 
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.horizontalSpacer_2 = QSpacerItem(0, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.open_layout.addItem(self.verticalSpacer_2)
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
 
-        self.verticalLayoutWidget_2 = QWidget(self.tools)
-        self.verticalLayoutWidget_2.setObjectName(u"verticalLayoutWidget_2")
-        self.verticalLayoutWidget_2.setGeometry(QRect(80, 0, 52, 91))
-        self.save_layout = QVBoxLayout(self.verticalLayoutWidget_2)
-        self.save_layout.setObjectName(u"save_layout")
-        self.save_layout.setContentsMargins(0, 0, 0, 0)
-        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.save_layout.addItem(self.verticalSpacer_3)
-
-        self.save_btn = QPushButton(self.verticalLayoutWidget_2)
+        self.save_btn = QPushButton(self.frame)
         self.save_btn.setObjectName(u"save_btn")
         self.save_btn.setMinimumSize(QSize(50, 50))
         self.save_btn.setMaximumSize(QSize(60, 60))
@@ -108,83 +98,63 @@ class Ui_MainWindow(object):
         icon5.addFile(u"resource/icons8-save-50.png", QSize(), QIcon.Normal, QIcon.Off)
         self.save_btn.setIcon(icon5)
 
-        self.save_layout.addWidget(self.save_btn)
+        self.horizontalLayout_3.addWidget(self.save_btn)
 
-        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.horizontalSpacer_3 = QSpacerItem(0, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.save_layout.addItem(self.verticalSpacer_4)
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_3)
 
-        self.verticalLayoutWidget_3 = QWidget(self.tools)
-        self.verticalLayoutWidget_3.setObjectName(u"verticalLayoutWidget_3")
-        self.verticalLayoutWidget_3.setGeometry(QRect(1040, 0, 52, 91))
-        self.import_layout = QVBoxLayout(self.verticalLayoutWidget_3)
-        self.import_layout.setObjectName(u"import_layout")
-        self.import_layout.setContentsMargins(0, 0, 0, 0)
-        self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.import_layout.addItem(self.verticalSpacer_5)
-
-        self.import_btn = QPushButton(self.verticalLayoutWidget_3)
-        self.import_btn.setObjectName(u"import_btn")
-        self.import_btn.setMinimumSize(QSize(50, 50))
-        self.import_btn.setMaximumSize(QSize(60, 60))
-        icon6 = QIcon()
-        icon6.addFile(u"resource/icons8-import-50.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.import_btn.setIcon(icon6)
-
-        self.import_layout.addWidget(self.import_btn)
-
-        self.verticalSpacer_6 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.import_layout.addItem(self.verticalSpacer_6)
-
-        self.verticalLayoutWidget_4 = QWidget(self.tools)
-        self.verticalLayoutWidget_4.setObjectName(u"verticalLayoutWidget_4")
-        self.verticalLayoutWidget_4.setGeometry(QRect(1110, 0, 52, 91))
-        self.export_layout = QVBoxLayout(self.verticalLayoutWidget_4)
-        self.export_layout.setObjectName(u"export_layout")
-        self.export_layout.setContentsMargins(0, 0, 0, 0)
-        self.verticalSpacer_7 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.export_layout.addItem(self.verticalSpacer_7)
-
-        self.export_btn = QPushButton(self.verticalLayoutWidget_4)
-        self.export_btn.setObjectName(u"export_btn")
-        self.export_btn.setMinimumSize(QSize(50, 50))
-        self.export_btn.setMaximumSize(QSize(60, 60))
-        icon7 = QIcon()
-        icon7.addFile(u"resource/icons8-export-50.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.export_btn.setIcon(icon7)
-
-        self.export_layout.addWidget(self.export_btn)
-
-        self.verticalSpacer_8 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.export_layout.addItem(self.verticalSpacer_8)
-
-        self.verticalLayoutWidget_5 = QWidget(self.tools)
-        self.verticalLayoutWidget_5.setObjectName(u"verticalLayoutWidget_5")
-        self.verticalLayoutWidget_5.setGeometry(QRect(140, 0, 52, 91))
-        self.rename_layout = QVBoxLayout(self.verticalLayoutWidget_5)
-        self.rename_layout.setObjectName(u"rename_layout")
-        self.rename_layout.setContentsMargins(0, 0, 0, 0)
-        self.verticalSpacer_9 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.rename_layout.addItem(self.verticalSpacer_9)
-
-        self.rename_btn = QPushButton(self.verticalLayoutWidget_5)
+        self.rename_btn = QPushButton(self.frame)
         self.rename_btn.setObjectName(u"rename_btn")
         self.rename_btn.setMinimumSize(QSize(50, 50))
         self.rename_btn.setMaximumSize(QSize(60, 60))
+        icon6 = QIcon()
+        icon6.addFile(u"resource/icons8-rename-50.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.rename_btn.setIcon(icon6)
+
+        self.horizontalLayout_3.addWidget(self.rename_btn)
+
+
+        self.horizontalLayout_2.addWidget(self.frame)
+
+        self.horizontalSpacer = QSpacerItem(812, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer)
+
+        self.frame_2 = QFrame(self.tools)
+        self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setMinimumSize(QSize(0, 0))
+        self.frame_2.setMaximumSize(QSize(135, 16777215))
+        self.frame_2.setFrameShape(QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_4 = QHBoxLayout(self.frame_2)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.import_btn = QPushButton(self.frame_2)
+        self.import_btn.setObjectName(u"import_btn")
+        self.import_btn.setMinimumSize(QSize(50, 50))
+        self.import_btn.setMaximumSize(QSize(60, 60))
+        icon7 = QIcon()
+        icon7.addFile(u"resource/icons8-import-50.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.import_btn.setIcon(icon7)
+
+        self.horizontalLayout_4.addWidget(self.import_btn)
+
+        self.horizontalSpacer_4 = QSpacerItem(0, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_4.addItem(self.horizontalSpacer_4)
+
+        self.export_btn = QPushButton(self.frame_2)
+        self.export_btn.setObjectName(u"export_btn")
+        self.export_btn.setMinimumSize(QSize(50, 50))
+        self.export_btn.setMaximumSize(QSize(60, 60))
         icon8 = QIcon()
-        icon8.addFile(u"resource/icons8-rename-50.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.rename_btn.setIcon(icon8)
+        icon8.addFile(u"resource/icons8-export-50.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.export_btn.setIcon(icon8)
 
-        self.rename_layout.addWidget(self.rename_btn)
+        self.horizontalLayout_4.addWidget(self.export_btn)
 
-        self.verticalSpacer_10 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.rename_layout.addItem(self.verticalSpacer_10)
+        self.horizontalLayout_2.addWidget(self.frame_2)
 
 
         self.verticalLayout_2.addWidget(self.tools)
@@ -252,9 +222,9 @@ class Ui_MainWindow(object):
         self.actionRename.setText(QCoreApplication.translate("MainWindow", u"Rename", None))
         self.open_btn.setText("")
         self.save_btn.setText("")
+        self.rename_btn.setText("")
         self.import_btn.setText("")
         self.export_btn.setText("")
-        self.rename_btn.setText("")
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuAction.setTitle(QCoreApplication.translate("MainWindow", u"Actions", None))
     # retranslateUi
