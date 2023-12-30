@@ -41,6 +41,7 @@ class MainWindow(QMainWindow):
 
         # Set up table headers
         self.model.setHorizontalHeaderLabels(["Path", "Name", "New Name"])
+        
         # Set header width to 33% for each column
         header = self.table_view.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.Stretch)  # Path column takes the remaining space
@@ -88,14 +89,6 @@ class MainWindow(QMainWindow):
             items.append(item)
         items.sort(key=lambda x: x.data(Qt.UserRole + 1).count(os.sep), reverse=True)
         return items
-    
-    def get_sorted_items_by_depth_xlxs(self):
-        items = []
-        for row in range(self.model.rowCount()):
-            item = self.model.item(row, 1)
-            items.append(item)
-        items.sort(key=lambda x: x.data(Qt.DisplayRole).count(os.sep), reverse=True)
-        return items    
     
     def export_to_xlsx(self):
         file_path, _ = QFileDialog.getSaveFileName(self, "Save Excel File", "", "Excel Files (*.xlsx)")
