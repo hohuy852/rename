@@ -39,7 +39,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QRadioButton" name="excel">
+          <widget class="QRadioButton" name="custom">
            <property name="text">
             <string>Custom from template</string>
            </property>
