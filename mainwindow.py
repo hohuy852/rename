@@ -23,8 +23,8 @@ class MainWindow(QMainWindow):
         self.rename_btn = self.ui.rename_btn
         # Connect signals and slots
         self.open_btn.clicked.connect(self.show_folder_dialog)
-        self.save_btn.clicked.connect(self.show_rename_dialog)
-        self.rename_btn.clicked.connect(self.rename_folders)
+        # self.save_btn.clicked.connect(self.show_rename_dialog)
+        self.rename_btn.clicked.connect(self.show_rename_dialog)
         self.export_btn.clicked.connect(self.export_to_xlsx)
         self.import_btn.clicked.connect(self.import_xlsx)
         # Create a standard item model for the table view
