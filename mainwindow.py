@@ -3,8 +3,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import os
 import openpyxl
-from rename import Ui_MainWindow
-
+from app import Ui_MainWindow
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -99,6 +98,7 @@ class MainWindow(QMainWindow):
 
             # Write headers to the Excel file
             headers = ["Path", "Name", "New Name"]
+            
             for col_num, header in enumerate(headers, 1):
                 sheet.cell(row=1, column=col_num, value=header)
 
