@@ -4,6 +4,7 @@ from PyQt5.QtCore import pyqtSignal, Qt
 
 class RenameDialog(QDialog):
     confirm_signal = pyqtSignal(str)
+    custom_signal = pyqtSignal()
 
     def __init__(self, parent=None):
         super(RenameDialog, self).__init__(parent)
@@ -35,9 +36,13 @@ class RenameDialog(QDialog):
 
     def confirm_action(self):
         new_name = self.newName.text()
-        if new_name:
-            self.confirm_signal.emit(new_name)
+        if self.custom.isChecked():
+            self.custom_signal.emit()
             self.close()
+        elif self.auto.isChecked():
+            if new_name:
+                self.confirm_signal.emit(new_name)
+                self.close()
 
     def cancel_action(self):
         self.close()

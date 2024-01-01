@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QFileDialog,QInputDialog,QHeaderView,QDialog
+from PyQt5.QtWidgets import QMainWindow, QFileDialog,QHeaderView,QMessageBox
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import os
@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
         self.rename_btn = self.ui.rename_btn
         # Connect signals and slots
         self.open_btn.clicked.connect(self.show_folder_dialog)
-        self.save_btn.clicked.connect(self.rename_folders_excel)
+        # self.save_btn.clicked.connect(self.rename_folders_excel)
         self.rename_btn.clicked.connect(self.show_rename_dialog)
         self.export_btn.clicked.connect(self.export_to_xlsx)
         self.import_btn.clicked.connect(self.import_xlsx)
@@ -32,9 +32,13 @@ class MainWindow(QMainWindow):
         self.table_view.setModel(self.model)
 
     def show_rename_dialog(self):
-
+        if self.model.rowCount() == 0:
+            # Show a warning message
+            QMessageBox.warning(self, "Warning", "No data in the table to rename.")
+            return
         dialog = RenameDialog(self)
         dialog.confirm_signal.connect(self.rename_folders)
+        dialog.custom_signal.connect(self.rename_folders_excel)
         dialog.exec_()
 
     def show_folder_dialog(self):
@@ -156,6 +160,7 @@ class MainWindow(QMainWindow):
 
             # Save the Excel file
             workbook.save(file_path)
+
     def import_xlsx(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Open Excel File", "", "Excel Files (*.xlsx)")
         if file_path:
@@ -173,7 +178,7 @@ class MainWindow(QMainWindow):
                 new_name_value = row[2] if row[2] is not None else ""
 
                 # Set the data for the new item
-                path_item = QStandardItem(str(row[1]))
+                path_item = QStandardItem(str(row[0]))
                 path_item.setData(str(row[0]), Qt.UserRole + 1)  # Set the path in UserRole+1
                 items.append(path_item)
 
@@ -183,6 +188,12 @@ class MainWindow(QMainWindow):
                     QStandardItem(str(new_name_value))  # "New Name" column
                 ]
                 self.model.appendRow(row_items)
+
+            # Set header width to 33% for each column
+            header = self.table_view.horizontalHeader()
+            header.setSectionResizeMode(0, QHeaderView.Stretch)  # Path column takes the remaining space
+            header.setSectionResizeMode(1, QHeaderView.ResizeToContents)  # Name column adjusts to content
+            header.setSectionResizeMode(2, QHeaderView.ResizeToContents)  # New Name column adjusts to content
 
             # No sorting here
 
