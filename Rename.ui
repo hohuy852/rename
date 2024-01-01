@@ -39,6 +39,16 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
+          <widget class="QRadioButton" name="excel">
+           <property name="text">
+            <string>Custom from template</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QRadioButton" name="manual">
            <property name="text">
             <string>Auto</string>
@@ -155,13 +165,6 @@
              </layout>
             </item>
            </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="excel">
-           <property name="text">
-            <string>Custom from template</string>
-           </property>
           </widget>
          </item>
          <item>

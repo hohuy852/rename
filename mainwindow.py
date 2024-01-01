@@ -1,10 +1,12 @@
-from PyQt5.QtWidgets import QMainWindow, QFileDialog,QInputDialog,QHeaderView
+from PyQt5.QtWidgets import QMainWindow, QFileDialog,QInputDialog,QHeaderView,QDialog
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import os
 import openpyxl
-from app import Ui_MainWindow
+from App import Ui_MainWindow
+from RenameWindow import RenameDialog
 
+        
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -21,12 +23,19 @@ class MainWindow(QMainWindow):
         self.rename_btn = self.ui.rename_btn
         # Connect signals and slots
         self.open_btn.clicked.connect(self.show_folder_dialog)
+        self.save_btn.clicked.connect(self.show_rename_dialog)
         self.rename_btn.clicked.connect(self.rename_folders)
         self.export_btn.clicked.connect(self.export_to_xlsx)
         self.import_btn.clicked.connect(self.import_xlsx)
         # Create a standard item model for the table view
         self.model = QStandardItemModel()
         self.table_view.setModel(self.model)
+
+    def show_rename_dialog(self):
+
+        dialog = RenameDialog()
+        dialog.confirm_signal.connect(self.rename_folders)
+        dialog.exec_()
 
     def show_folder_dialog(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Directory")
@@ -55,16 +64,9 @@ class MainWindow(QMainWindow):
                 item_path = os.path.normpath(os.path.join(root, name))
                 item.setData(item_path, Qt.UserRole + 1)  # Save path in UserRole+1
                 self.model.appendRow([QStandardItem(item_path), item])
-    def rename_folders(self):
+    def rename_folders(self,new_name):
         items = self.get_sorted_items_by_depth()
         
-        # Get the new name from the user before entering the loop
-        new_name, ok = QInputDialog.getText(self, "Rename Folder", "Enter new name ")
-        
-        if not ok:
-            # User pressed Cancel, exit the function
-            return
-
         index = 1  # Initialize an index to make the new name unique
         
         for item in items:
