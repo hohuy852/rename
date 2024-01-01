@@ -13,6 +13,9 @@ class RenameDialog(QDialog):
         self.confirm_btn = self.ui.confirm_btn
         self.cancel_btn = self.ui.cancel_btn
         self.newName = self.ui.newName
+
+        self.custom = self.ui.custom
+        self.auto = self.ui.manual
         # Connect buttons to functions
         self.ui.confirm_btn.clicked.connect(self.confirm_action)
         self.ui.cancel_btn.clicked.connect(self.cancel_action)
@@ -20,7 +23,6 @@ class RenameDialog(QDialog):
     def confirm_action(self):
         new_name = self.newName.text()
         if new_name:
-            print(new_name)
             self.confirm_signal.emit(new_name)
             self.close()
 
