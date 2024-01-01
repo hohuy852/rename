@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
         self.rename_btn = self.ui.rename_btn
         # Connect signals and slots
         self.open_btn.clicked.connect(self.show_folder_dialog)
-        # self.save_btn.clicked.connect(self.show_rename_dialog)
+        self.save_btn.clicked.connect(self.rename_folders_excel)
         self.rename_btn.clicked.connect(self.show_rename_dialog)
         self.export_btn.clicked.connect(self.export_to_xlsx)
         self.import_btn.clicked.connect(self.import_xlsx)
@@ -33,7 +33,7 @@ class MainWindow(QMainWindow):
 
     def show_rename_dialog(self):
 
-        dialog = RenameDialog()
+        dialog = RenameDialog(self)
         dialog.confirm_signal.connect(self.rename_folders)
         dialog.exec_()
 
@@ -64,6 +64,7 @@ class MainWindow(QMainWindow):
                 item_path = os.path.normpath(os.path.join(root, name))
                 item.setData(item_path, Qt.UserRole + 1)  # Save path in UserRole+1
                 self.model.appendRow([QStandardItem(item_path), item])
+
     def rename_folders(self,new_name):
         items = self.get_sorted_items_by_depth()
         
@@ -81,6 +82,44 @@ class MainWindow(QMainWindow):
             os.rename(old_path, new_path)
             item.setData(new_path, Qt.UserRole + 1)
             item.setText(f"{new_name}_{index}")
+
+    def rename_folders_excel(self):
+        items = self.get_sorted_items_by_depth()
+
+        for row in range(len(items)):
+            name_item = self.model.item(row, 0)
+            path_item = self.model.item(row, 1)
+            new_name_item = self.model.item(row, 2)
+
+            old_path = path_item.data(Qt.UserRole + 1)
+            new_name = new_name_item.text()
+
+            # Check if the old path exists
+            if os.path.exists(old_path):
+                # Skip if the "New Name" column has the same value
+                if new_name and new_name != name_item.text():
+                    new_path = os.path.join(os.path.dirname(old_path), new_name)
+
+                    # Check if the new path already exists
+                    if os.path.exists(new_path):
+                        print(f"Skipping rename for path '{old_path}' as '{new_name}' already exists")
+                    else:
+                        try:
+                            # Rename the folder
+                            os.rename(old_path, new_path)
+
+                            # Update the model data
+                            path_item.setData(new_path, Qt.UserRole + 1)
+                            name_item.setText(new_name)
+                        except FileExistsError:
+                            print(f"Error renaming '{old_path}' to '{new_path}': File already exists")
+                elif not new_name:
+                    print(f"New Name not provided for path: {old_path}")
+                else:
+                    print(f"Skipping rename for path '{old_path}' as 'New Name' is the same")
+            else:
+                print(f"Folder does not exist: {old_path}. Skipping.")
+
 
     def get_sorted_items_by_depth(self):
         items = []
