@@ -68,6 +68,36 @@ class MainWindow(QMainWindow):
                 item_path = os.path.normpath(os.path.join(root, name))
                 item.setData(item_path, Qt.UserRole + 1)  # Save path in UserRole+1
                 self.model.appendRow([QStandardItem(item_path), item])
+                
+    def load_files(self, folder_path):
+        self.model.clear()
+
+        # Set up table headers
+        self.model.setHorizontalHeaderLabels(["Path", "Name", "New Name"])
+
+        # Set header width to 50% for each column
+        header = self.table_view.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.Stretch)  # File Name column takes the remaining space
+        header.setSectionResizeMode(1, QHeaderView.Stretch)  # File Path column takes the remaining space
+        header.setSectionResizeMode(2, QHeaderView.ResizeToContents)  # New Name column adjusts to content
+
+        # Add files to the model
+        self.add_files_to_model(folder_path)
+
+    def add_files_to_model(self, folder_path):
+        for root, dirs, files in os.walk(folder_path):
+            for file_name in files:
+                file_path = os.path.join(root, file_name)
+
+                # Create QStandardItems for file name and file path
+                file_name_item = QStandardItem(file_name)
+                file_path_item = QStandardItem(file_path)
+
+                # Set data for file path in UserRole + 1
+                file_path_item.setData(file_path, Qt.UserRole + 1)
+
+                # Append the items to the model
+                self.model.appendRow([file_path_item, file_name_item])
 
     def rename_folders(self,new_name):
         items = self.get_sorted_items_by_depth()
