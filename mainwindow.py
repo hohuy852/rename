@@ -4,7 +4,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import os
 import openpyxl
 from App import Ui_MainWindow
-from RenameWindow import RenameDialog
+from Dialog.Renaming.RenameWindow import RenameDialog
 
         
 class MainWindow(QMainWindow):

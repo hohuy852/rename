@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QMainWindow, QDialog
-from Rename import Rename_Dialog
+from PyQt5.QtWidgets import QDialog
+from Dialog.Renaming.Rename import Rename_Dialog
 from PyQt5.QtCore import pyqtSignal, Qt
 
 class RenameDialog(QDialog):
