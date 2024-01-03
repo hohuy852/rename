@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
     def show_folder_dialog(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Directory")
         if folder_path:
-            self.load_files(folder_path)
+            self.load_folder_contents(folder_path)
 
     def load_folder_contents(self, folder_path):
         # Clear existing items from the model
