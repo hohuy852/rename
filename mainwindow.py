@@ -1,11 +1,12 @@
 from PyQt5.QtWidgets import QMainWindow, QFileDialog,QHeaderView,QMessageBox
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
+import pandas as pd
 import os
 import openpyxl
 from App import Ui_MainWindow
 from Dialog.Renaming.RenameWindow import RenameDialog
-
+from pathlib import Path
         
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -119,7 +120,11 @@ class MainWindow(QMainWindow):
 
     def rename_folders_excel(self):
         items = self.get_sorted_items_by_depth()
-
+        error_log = []  # Create an empty list to store errors
+        if all(self.model.item(row, 2) is None or self.model.item(row, 2).text() == "" for row in range(self.model.rowCount())):
+            # Show a warning if no values in the "New Name" column
+            QMessageBox.warning(self, "Warning", "No 'New Name' values provided.")
+            return
         for row in range(len(items)):
             name_item = self.model.item(row, 0)
             path_item = self.model.item(row, 1)
@@ -128,15 +133,16 @@ class MainWindow(QMainWindow):
             old_path = path_item.data(Qt.UserRole + 1)
             new_name = new_name_item.text()
 
-            # Check if the old path exists
-            if os.path.exists(old_path):
-                # Skip if the "New Name" column has the same value
-                if new_name and new_name != name_item.text():
-                    new_path = os.path.join(os.path.dirname(old_path), new_name)
+            # Check if the "New Name" item exists and has a value
+            if new_name_item and new_name_item.text() != "":
+                new_name = new_name_item.text()
 
+                # Check if the old path exists
+                if os.path.exists(old_path):
                     # Check if the new path already exists
+                    new_path = os.path.join(os.path.dirname(old_path), new_name)
                     if os.path.exists(new_path):
-                        print(f"Skipping rename for path '{old_path}' as '{new_name}' already exists")
+                        error_log.append({"path": old_path, "error": f"Skipping rename for path '{old_path}' as '{new_name}' already exists"})
                     else:
                         try:
                             # Rename the folder
@@ -146,14 +152,40 @@ class MainWindow(QMainWindow):
                             path_item.setData(new_path, Qt.UserRole + 1)
                             name_item.setText(new_name)
                         except FileExistsError:
-                            print(f"Error renaming '{old_path}' to '{new_path}': File already exists")
-                elif not new_name:
-                    print(f"New Name not provided for path: {old_path}")
+                            error_log.append({"path": old_path, "error": f"Error renaming '{old_path}' to '{new_path}': File already exists"})
                 else:
-                    print(f"Skipping rename for path '{old_path}' as 'New Name' is the same")
+                    error_log.append({"path": old_path, "error": f"Folder does not exist: {old_path}. Skipping."})
             else:
-                print(f"Folder does not exist: {old_path}. Skipping.")
+                error_log.append({"path": old_path, "error": f"Skipping rename for path '{old_path}' as 'New Name' is not provided"})
 
+        # Export error log to Excel
+        self.export_error_log_to_excel(error_log)
+
+    def export_error_log_to_excel(self, error_log):
+        if not error_log:
+            print("No errors to export.")
+            return
+
+        desktop_path = str(Path.home() / "Desktop")
+        file_path = os.path.join(desktop_path, "error_log.xlsx")
+
+        # Create a new Excel workbook and select the active sheet
+        workbook = openpyxl.Workbook()
+        sheet = workbook.active
+
+        # Write headers to the Excel file
+        headers = ["path", "error"]
+        for col_num, header in enumerate(headers, 1):
+            sheet.cell(row=1, column=col_num, value=header)
+
+        # Write data to the Excel file
+        for row_num, error_entry in enumerate(error_log, 2):
+            sheet.cell(row=row_num, column=1, value=error_entry["path"])
+            sheet.cell(row=row_num, column=2, value=error_entry["error"])
+
+        # Save the Excel file
+        workbook.save(file_path)
+        print(f"Error log saved to: {file_path}")
 
     def get_sorted_items_by_depth(self):
         items = []
