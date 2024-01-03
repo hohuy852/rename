@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
     def show_folder_dialog(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Directory")
         if folder_path:
-            self.load_folder_contents(folder_path)
+            self.load_files(folder_path)
 
     def load_folder_contents(self, folder_path):
         # Clear existing items from the model
@@ -86,6 +86,9 @@ class MainWindow(QMainWindow):
         self.add_files_to_model(folder_path)
 
     def add_files_to_model(self, folder_path):
+        total_files = sum(len(files) for _, _, files in os.walk(folder_path))
+        loaded_files = 0
+
         for root, dirs, files in os.walk(folder_path):
             for file_name in files:
                 file_path = os.path.join(root, file_name)
@@ -99,6 +102,12 @@ class MainWindow(QMainWindow):
 
                 # Append the items to the model
                 self.model.appendRow([file_path_item, file_name_item])
+
+                # Update progress
+                loaded_files += 1
+                print(f"File {loaded_files}/{total_files} loaded: {file_path}")
+
+        print("Loading files completed.")
 
     def rename_folders(self,new_name):
         items = self.get_sorted_items_by_depth()
