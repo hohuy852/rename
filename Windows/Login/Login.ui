@@ -88,7 +88,7 @@ border-top-left-radius: 50px;</string>
 border-top-left-radius: 50px;
 background-image: url(:/background/background.jpg);
 background-position:center;
-background-size: contain;</string>
+</string>
      </property>
      <property name="text">
       <string/>

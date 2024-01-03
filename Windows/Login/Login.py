@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './Login/Login.ui'
+# Form implementation generated from reading ui file './Windows/Login/Login.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -9,14 +9,17 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import Windows.Login.background_rc
 
 
-class Login_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(625, 565)
-        self.widget = QtWidgets.QWidget(Form)
-        self.widget.setGeometry(QtCore.QRect(30, 30, 550, 500))
+class Login_Window(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(612, 617)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.widget = QtWidgets.QWidget(self.centralwidget)
+        self.widget.setGeometry(QtCore.QRect(30, 70, 550, 500))
         self.widget.setStyleSheet("QPushButton#pushButton{\n"
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(11, 131, 120, 219), stop:1 rgba(85, 98, 112, 226));\n"
 "    color:rgba(255, 255, 255, 210);\n"
@@ -52,14 +55,17 @@ class Login_Form(object):
         self.widget.setObjectName("widget")
         self.label = QtWidgets.QLabel(self.widget)
         self.label.setGeometry(QtCore.QRect(40, 30, 280, 430))
-        self.label.setStyleSheet("border-image: url(:/images/background.jpg);\n"
+        self.label.setStyleSheet("border-image: url(:/background/background.jpg);\n"
 "border-top-left-radius: 50px;")
         self.label.setText("")
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.widget)
         self.label_2.setGeometry(QtCore.QRect(40, 30, 280, 430))
         self.label_2.setStyleSheet("background-color:rgba(0, 0, 0, 80);\n"
-"border-top-left-radius: 50px;")
+"border-top-left-radius: 50px;\n"
+"background-image: url(:/background/background.jpg);\n"
+"background-position:center;\n"
+"background-size: contain;")
         self.label_2.setText("")
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(self.widget)
@@ -108,49 +114,6 @@ class Login_Form(object):
         font.setWeight(75)
         self.pushButton.setFont(font)
         self.pushButton.setObjectName("pushButton")
-        self.label_5 = QtWidgets.QLabel(self.widget)
-        self.label_5.setGeometry(QtCore.QRect(301, 345, 181, 16))
-        self.label_5.setStyleSheet("color:rgba(0, 0, 0, 210);")
-        self.label_5.setObjectName("label_5")
-        self.horizontalLayoutWidget = QtWidgets.QWidget(self.widget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(318, 383, 141, 31))
-        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout.setSpacing(0)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.pushButton_2 = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-        self.pushButton_2.setMaximumSize(QtCore.QSize(30, 30))
-        font = QtGui.QFont()
-        font.setFamily("Social Media Circled")
-        font.setPointSize(15)
-        self.pushButton_2.setFont(font)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.horizontalLayout.addWidget(self.pushButton_2)
-        self.pushButton_3 = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-        self.pushButton_3.setMaximumSize(QtCore.QSize(30, 30))
-        font = QtGui.QFont()
-        font.setFamily("Social Media Circled")
-        font.setPointSize(15)
-        self.pushButton_3.setFont(font)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.horizontalLayout.addWidget(self.pushButton_3)
-        self.pushButton_4 = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-        self.pushButton_4.setMaximumSize(QtCore.QSize(30, 30))
-        font = QtGui.QFont()
-        font.setFamily("Social Media Circled")
-        font.setPointSize(15)
-        self.pushButton_4.setFont(font)
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.horizontalLayout.addWidget(self.pushButton_4)
-        self.pushButton_5 = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-        self.pushButton_5.setMaximumSize(QtCore.QSize(30, 30))
-        font = QtGui.QFont()
-        font.setFamily("Social Media Circled")
-        font.setPointSize(15)
-        self.pushButton_5.setFont(font)
-        self.pushButton_5.setObjectName("pushButton_5")
-        self.horizontalLayout.addWidget(self.pushButton_5)
         self.label_6 = QtWidgets.QLabel(self.widget)
         self.label_6.setGeometry(QtCore.QRect(40, 80, 230, 130))
         self.label_6.setStyleSheet("background-color:rgba(0, 0, 0, 75);")
@@ -174,23 +137,26 @@ class Login_Form(object):
         self.label_8.setFont(font)
         self.label_8.setStyleSheet("color:rgba(255, 255, 255, 170);")
         self.label_8.setObjectName("label_8")
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 612, 21))
+        self.menubar.setObjectName("menubar")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.label_4.setText(_translate("Form", "Log In"))
-        self.lineEdit.setPlaceholderText(_translate("Form", "  User Name"))
-        self.lineEdit_2.setPlaceholderText(_translate("Form", "  Password"))
-        self.pushButton.setText(_translate("Form", "L o g  I n"))
-        self.label_5.setText(_translate("Form", "Forgot your User Name or password?"))
-        self.pushButton_2.setText(_translate("Form", "E"))
-        self.pushButton_3.setText(_translate("Form", "D"))
-        self.pushButton_4.setText(_translate("Form", "M"))
-        self.pushButton_5.setText(_translate("Form", "C"))
-        self.label_7.setText(_translate("Form", "SihinaCODE"))
-        self.label_8.setText(_translate("Form", "Hi,\n"
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label_4.setText(_translate("MainWindow", "Log In"))
+        self.lineEdit.setPlaceholderText(_translate("MainWindow", "  User Name"))
+        self.lineEdit_2.setPlaceholderText(_translate("MainWindow", "  Password"))
+        self.pushButton.setText(_translate("MainWindow", "L o g  I n"))
+        self.label_7.setText(_translate("MainWindow", "SihinaCODE"))
+        self.label_8.setText(_translate("MainWindow", "Hi,\n"
 "Welcome to my youtube channel.\n"
 "Don\'t forget to subscribe."))

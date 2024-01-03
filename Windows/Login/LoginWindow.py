@@ -1,10 +1,10 @@
-from PyQt5.QtWidgets import QWidget
-from Windows.Login.Login import Login_Form
+from PyQt5.QtWidgets import QDialog,QMainWindow
+from Windows.Login.Login import Login_Window
+from PyQt5.QtCore import pyqtSignal, Qt
 
-class LoginForm(QWidget):
+class LoginWindow(QMainWindow):
     def __init__(self):
-        super(LoginForm, self).__init__()
-        Form = QWidget
-        ui = Login_Form()
-        ui.setupUi(Form)
-        Form.show()
+        super(LoginWindow, self).__init__()
+
+        self.ui = Login_Window()
+        self.ui.setupUi(self)
