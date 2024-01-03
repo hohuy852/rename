@@ -163,9 +163,9 @@ class MainWindow(QMainWindow):
                         except FileExistsError:
                             error_log.append({"path": old_path, "error": f"Error renaming '{old_path}' to '{new_path}': File already exists"})
                 else:
-                    error_log.append({"path": old_path, "error": f"Folder does not exist: {old_path}. Skipping."})
-            else:
-                error_log.append({"path": old_path, "error": f"Skipping rename for path '{old_path}' as 'New Name' is not provided"})
+                    error_log.append({"path": old_path, "error": f"Folder does not exist: {old_path}."})
+            # else:
+            #     error_log.append({"path": old_path, "error": f"Skipping rename for path '{old_path}' as 'New Name' is not provided"})
 
         # Export error log to Excel
         self.export_error_log_to_excel(error_log)
