@@ -1,3 +1,4 @@
 pyqt5
 pyside6
 openpyxl
+pyinstaller
