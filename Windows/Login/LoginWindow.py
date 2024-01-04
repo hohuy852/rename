@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog,QMainWindow
+from PyQt5.QtWidgets import QDialog,QMainWindow,QMessageBox
 from Windows.Login.Login import Login_Window
 from PyQt5.QtCore import pyqtSignal, Qt
 from mainwindow import MainWindow
@@ -47,9 +47,11 @@ class LoginWindow(QMainWindow):
 
             else:
                 # Handle unsuccessful login (e.g., show an error message)
+                QMessageBox.warning(self, "Warning", "login fail.")
                 print(f"Login failed. Status code: {response}")
         except Exception as e:
             # Handle exceptions (e.g., network error)
+            QMessageBox.warning(self, "Warning", "error.")
             print(f"Error during login: {str(e)}")
 
 
