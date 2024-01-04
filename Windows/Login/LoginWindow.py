@@ -3,6 +3,7 @@ from Windows.Login.Login import Login_Window
 from PyQt5.QtCore import pyqtSignal, Qt
 from mainwindow import MainWindow
 from dotenv import load_dotenv
+import json
 import requests, os
 load_dotenv()
 
@@ -29,15 +30,14 @@ class LoginWindow(QMainWindow):
         # Make API call
         api_url = os.getenv("API_URL")
         data = {'username': username, 'password': password}
-
+        headers = {
+            "Content-Type": "application/json"
+        }
         try:
-            response = requests.post(api_url, json=data)
+            response = requests.post(api_url,  data=json.dumps(data), headers=headers)
+            parsed_response = json.loads(response.text)
+            if 'statusCode' in parsed_response and parsed_response['statusCode'] == 200:
 
-            if response.status_code == 200:
-                # Successful login, emit a signal with user data
-                user_data = response.json()  # Modify this based on your API response structure
-
-                # Close the current login window
                 self.close()
 
                 # Show the MainWindow only if it's not already created

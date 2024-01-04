@@ -134,7 +134,7 @@ class MainWindow(QMainWindow):
             # Show a warning if no values in the "New Name" column
             QMessageBox.warning(self, "Warning", "No 'New Name' values provided.")
             return
-        for row in range(len(items)):
+        for row, item in enumerate(items):
             name_item = self.model.item(row, 0)
             path_item = self.model.item(row, 1)
             new_name_item = self.model.item(row, 2)
@@ -169,6 +169,7 @@ class MainWindow(QMainWindow):
 
         # Export error log to Excel
         self.export_error_log_to_excel(error_log)
+
 
     def export_error_log_to_excel(self, error_log):
         if not error_log:
