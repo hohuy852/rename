@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 from PyQt5 import QtCore
+from mainwindow import MainWindow
 from Windows.Login.LoginWindow import LoginWindow
 if __name__ == '__main__':
     app = QApplication(sys.argv)

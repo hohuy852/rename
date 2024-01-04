@@ -7,6 +7,7 @@ import requests, os
 load_dotenv()
 
 class LoginWindow(QMainWindow):
+    custom_signal = pyqtSignal()
     def __init__(self):
         super(LoginWindow, self).__init__()
 
@@ -18,11 +19,13 @@ class LoginWindow(QMainWindow):
         self.password = self.ui.password
         self.closeBtn.clicked.connect(self.closeWindow)
         self.loginBtn.clicked.connect(self.login)
-
+        self.mainwindow = None
     def closeWindow(self):
         self.close()
 
     def login(self):
+        mainwindow = MainWindow()
+        mainwindow.show()
         username = self.username.text()
         password = self.password.text()
         # Make API call
@@ -35,7 +38,11 @@ class LoginWindow(QMainWindow):
             if response.status_code == 200:
                 # Successful login, emit a signal with user data
                 user_data = response.json()  # Modify this based on your API response structure
-                print("success")
+                self.close()
+                
+                self.mainwindow = MainWindow()
+                self.mainwindow.show()
+
             else:
                 # Handle unsuccessful login (e.g., show an error message)
                 print(f"Login failed. Status code: {response}")
