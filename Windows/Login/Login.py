@@ -64,8 +64,7 @@ class Login_Window(object):
         self.label_2.setStyleSheet("background-color:rgba(0, 0, 0, 80);\n"
 "border-top-left-radius: 50px;\n"
 "background-image: url(:/background/background.jpg);\n"
-"background-position:center;\n"
-"background-size: contain;")
+"background-position:center;")
         self.label_2.setText("")
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(self.widget)
