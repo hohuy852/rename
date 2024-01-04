@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './rename.ui'
+# Form implementation generated from reading ui file './App.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -41,7 +41,7 @@ class Ui_MainWindow(object):
         self.open_btn.setMaximumSize(QtCore.QSize(60, 60))
         self.open_btn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(".\\resource/icons8-open-file-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons8-open-file-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.open_btn.setIcon(icon)
         self.open_btn.setObjectName("open_btn")
         self.horizontalLayout_3.addWidget(self.open_btn)
@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
         self.save_btn.setMaximumSize(QtCore.QSize(60, 60))
         self.save_btn.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(".\\resource/icons8-save-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/icons/icons8-save-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.save_btn.setIcon(icon1)
         self.save_btn.setObjectName("save_btn")
         self.horizontalLayout_3.addWidget(self.save_btn)
@@ -63,7 +63,7 @@ class Ui_MainWindow(object):
         self.rename_btn.setMaximumSize(QtCore.QSize(60, 60))
         self.rename_btn.setText("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(".\\resource/icons8-rename-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/icons/icons8-rename-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.rename_btn.setIcon(icon2)
         self.rename_btn.setObjectName("rename_btn")
         self.horizontalLayout_3.addWidget(self.rename_btn)
@@ -83,7 +83,7 @@ class Ui_MainWindow(object):
         self.import_btn.setMaximumSize(QtCore.QSize(60, 60))
         self.import_btn.setText("")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(".\\resource/icons8-import-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(":/icons/icons8-import-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.import_btn.setIcon(icon3)
         self.import_btn.setObjectName("import_btn")
         self.horizontalLayout_4.addWidget(self.import_btn)
@@ -94,7 +94,7 @@ class Ui_MainWindow(object):
         self.export_btn.setMaximumSize(QtCore.QSize(60, 60))
         self.export_btn.setText("")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(".\\resource/icons8-export-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(":/icons/icons8-export-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.export_btn.setIcon(icon4)
         self.export_btn.setObjectName("export_btn")
         self.horizontalLayout_4.addWidget(self.export_btn)
@@ -183,4 +183,4 @@ class Ui_MainWindow(object):
         self.actionExport.setText(_translate("MainWindow", "Export"))
         self.actionImport.setText(_translate("MainWindow", "Import"))
         self.actionRename.setText(_translate("MainWindow", "Rename"))
-import assets_rc
+import resource.icons_rc
