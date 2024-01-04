@@ -24,8 +24,6 @@ class LoginWindow(QMainWindow):
         self.close()
 
     def login(self):
-        mainwindow = MainWindow()
-        mainwindow.show()
         username = self.username.text()
         password = self.password.text()
         # Make API call
@@ -38,10 +36,14 @@ class LoginWindow(QMainWindow):
             if response.status_code == 200:
                 # Successful login, emit a signal with user data
                 user_data = response.json()  # Modify this based on your API response structure
+
+                # Close the current login window
                 self.close()
-                
-                self.mainwindow = MainWindow()
-                self.mainwindow.show()
+
+                # Show the MainWindow only if it's not already created
+                if not self.mainwindow:
+                    self.mainwindow = MainWindow()
+                    self.mainwindow.show()
 
             else:
                 # Handle unsuccessful login (e.g., show an error message)
