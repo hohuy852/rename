@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="background">
     <file>background.jpg</file>
+    <file>close.png</file>
   </qresource>
 </RCC>

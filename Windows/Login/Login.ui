@@ -134,7 +134,7 @@ border-bottom-right-radius: 50px;</string>
       <string>Log In</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit">
+    <widget class="QLineEdit" name="username">
      <property name="geometry">
       <rect>
        <x>295</x>
@@ -159,7 +159,7 @@ padding-bottom:7px;</string>
       <string>  User Name</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_2">
+    <widget class="QLineEdit" name="password">
      <property name="geometry">
       <rect>
        <x>295</x>
@@ -187,7 +187,7 @@ padding-bottom:7px;</string>
       <string>  Password</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="loginBtn">
      <property name="geometry">
       <rect>
        <x>295</x>
@@ -269,6 +269,32 @@ padding-bottom:7px;</string>
       <string>Hi,
 Welcome to my youtube channel.
 Don't forget to subscribe.</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="closeBtn">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>40</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:transparent;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../resource/background.qrc">
+       <normaloff>:/background/close.png</normaloff>:/background/close.png</iconset>
      </property>
     </widget>
    </widget>

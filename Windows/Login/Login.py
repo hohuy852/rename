@@ -9,7 +9,6 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import Windows.Login.background_rc
 
 
 class Login_Window(object):
@@ -64,7 +63,8 @@ class Login_Window(object):
         self.label_2.setStyleSheet("background-color:rgba(0, 0, 0, 80);\n"
 "border-top-left-radius: 50px;\n"
 "background-image: url(:/background/background.jpg);\n"
-"background-position:center;")
+"background-position:center;\n"
+"")
         self.label_2.setText("")
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(self.widget)
@@ -82,37 +82,37 @@ class Login_Window(object):
         self.label_4.setFont(font)
         self.label_4.setStyleSheet("color:rgba(0, 0, 0, 200);")
         self.label_4.setObjectName("label_4")
-        self.lineEdit = QtWidgets.QLineEdit(self.widget)
-        self.lineEdit.setGeometry(QtCore.QRect(295, 150, 190, 40))
+        self.username = QtWidgets.QLineEdit(self.widget)
+        self.username.setGeometry(QtCore.QRect(295, 150, 190, 40))
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.lineEdit.setFont(font)
-        self.lineEdit.setStyleSheet("background-color:rgba(0, 0, 0, 0);\n"
+        self.username.setFont(font)
+        self.username.setStyleSheet("background-color:rgba(0, 0, 0, 0);\n"
 "border:none;\n"
 "border-bottom:2px solid rgba(46, 82, 101, 200);\n"
 "color:rgba(0, 0, 0, 240);\n"
 "padding-bottom:7px;")
-        self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.widget)
-        self.lineEdit_2.setGeometry(QtCore.QRect(295, 215, 190, 40))
+        self.username.setObjectName("username")
+        self.password = QtWidgets.QLineEdit(self.widget)
+        self.password.setGeometry(QtCore.QRect(295, 215, 190, 40))
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.lineEdit_2.setFont(font)
-        self.lineEdit_2.setStyleSheet("background-color:rgba(0, 0, 0, 0);\n"
+        self.password.setFont(font)
+        self.password.setStyleSheet("background-color:rgba(0, 0, 0, 0);\n"
 "border:none;\n"
 "border-bottom:2px solid rgba(46, 82, 101, 200);\n"
 "color:rgba(0, 0, 0, 240);\n"
 "padding-bottom:7px;")
-        self.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.Password)
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.pushButton = QtWidgets.QPushButton(self.widget)
-        self.pushButton.setGeometry(QtCore.QRect(295, 295, 190, 40))
+        self.password.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.password.setObjectName("password")
+        self.loginBtn = QtWidgets.QPushButton(self.widget)
+        self.loginBtn.setGeometry(QtCore.QRect(295, 295, 190, 40))
         font = QtGui.QFont()
         font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
-        self.pushButton.setFont(font)
-        self.pushButton.setObjectName("pushButton")
+        self.loginBtn.setFont(font)
+        self.loginBtn.setObjectName("loginBtn")
         self.label_6 = QtWidgets.QLabel(self.widget)
         self.label_6.setGeometry(QtCore.QRect(40, 80, 230, 130))
         self.label_6.setStyleSheet("background-color:rgba(0, 0, 0, 75);")
@@ -136,6 +136,15 @@ class Login_Window(object):
         self.label_8.setFont(font)
         self.label_8.setStyleSheet("color:rgba(255, 255, 255, 170);")
         self.label_8.setObjectName("label_8")
+        self.closeBtn = QtWidgets.QPushButton(self.widget)
+        self.closeBtn.setGeometry(QtCore.QRect(480, 40, 20, 20))
+        self.closeBtn.setMaximumSize(QtCore.QSize(20, 20))
+        self.closeBtn.setStyleSheet("background-color:transparent;")
+        self.closeBtn.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/background/close.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.closeBtn.setIcon(icon)
+        self.closeBtn.setObjectName("closeBtn")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 612, 21))
@@ -152,10 +161,11 @@ class Login_Window(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_4.setText(_translate("MainWindow", "Log In"))
-        self.lineEdit.setPlaceholderText(_translate("MainWindow", "  User Name"))
-        self.lineEdit_2.setPlaceholderText(_translate("MainWindow", "  Password"))
-        self.pushButton.setText(_translate("MainWindow", "L o g  I n"))
+        self.username.setPlaceholderText(_translate("MainWindow", "  User Name"))
+        self.password.setPlaceholderText(_translate("MainWindow", "  Password"))
+        self.loginBtn.setText(_translate("MainWindow", "L o g  I n"))
         self.label_7.setText(_translate("MainWindow", "SihinaCODE"))
         self.label_8.setText(_translate("MainWindow", "Hi,\n"
 "Welcome to my youtube channel.\n"
 "Don\'t forget to subscribe."))
+import Windows.Login.background_rc
