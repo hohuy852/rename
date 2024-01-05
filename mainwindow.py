@@ -128,19 +128,21 @@ class MainWindow(QMainWindow):
             item.setText(f"{new_name}_{index}")
 
     def rename_folders_excel(self):
-        items = self.get_sorted_items_by_depth()
         error_log = []  # Create an empty list to store errors
         if all(self.model.item(row, 2) is None or self.model.item(row, 2).text() == "" for row in range(self.model.rowCount())):
             # Show a warning if no values in the "New Name" column
             QMessageBox.warning(self, "Warning", "No 'New Name' values provided.")
             return
+
+        # Get items and sort them based on the depth of the new name in reverse order
+        items = self.get_sorted_items_by_depth()
+
         for row, item in enumerate(items):
-            name_item = self.model.item(row, 0)
-            path_item = self.model.item(row, 1)
+            path_item = self.model.item(row, 0)
+            name_item = self.model.item(row, 1)
             new_name_item = self.model.item(row, 2)
 
             old_path = path_item.data(Qt.UserRole + 1)
-            new_name = new_name_item.text()
 
             # Check if the "New Name" item exists and has a value
             if new_name_item and new_name_item.text() != "":
@@ -160,6 +162,10 @@ class MainWindow(QMainWindow):
                             # Update the model data
                             path_item.setData(new_path, Qt.UserRole + 1)
                             name_item.setText(new_name)
+
+                            # Update subfolder paths
+                            self.update_subfolder_paths(row, old_path, new_path)
+
                         except FileExistsError:
                             error_log.append({"path": old_path, "error": f"Error renaming '{old_path}' to '{new_path}': File already exists"})
                 else:
@@ -169,6 +175,26 @@ class MainWindow(QMainWindow):
 
         # Export error log to Excel
         self.export_error_log_to_excel(error_log)
+
+    def update_subfolder_paths(self, row, old_parent_path, new_parent_path):
+        # Update paths for subfolders in the model
+        for sub_row in range(row + 1, self.model.rowCount()):
+            sub_path_item = self.model.item(sub_row, 1)
+            sub_path = sub_path_item.data(Qt.UserRole + 1)
+
+            if sub_path.startswith(old_parent_path):
+                # Replace the old parent path with the new parent path
+                relative_path = os.path.relpath(sub_path, old_parent_path)
+                new_sub_path = os.path.join(new_parent_path, relative_path)
+                sub_path_item.setData(new_sub_path, Qt.UserRole + 1)
+
+    def get_sorted_items_by_depth(self):
+        items = []
+        for row in range(self.model.rowCount()):
+            item = self.model.item(row, 1)
+            items.append(item)
+        items.sort(key=lambda x: x.data(Qt.UserRole + 1).count(os.sep), reverse=True)
+        return items
 
 
     def export_error_log_to_excel(self, error_log):
