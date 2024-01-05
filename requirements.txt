@@ -1,4 +1,6 @@
 pyqt5
 pyside6
 openpyxl
+requests
+python-dotenv
 pyinstaller
