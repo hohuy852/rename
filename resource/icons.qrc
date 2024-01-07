@@ -1,6 +1,5 @@
 <RCC>
   <qresource prefix="icons">
-    <file>user-32.png</file>
     <file>folder-menu.png</file>
     <file>logout.png</file>
     <file>profile.png</file>
