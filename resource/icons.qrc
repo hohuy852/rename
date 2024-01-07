@@ -1,5 +1,14 @@
 <RCC>
   <qresource prefix="icons">
+    <file>user-32.png</file>
+    <file>folder-menu.png</file>
+    <file>logout.png</file>
+    <file>profile.png</file>
+    <file>support.png</file>
+    <file>export.png</file>
+    <file>import.png</file>
+    <file>rename.png</file>
+    <file>folder-open.png</file>
     <file>icons8-export-50.png</file>
     <file>icons8-import-50.png</file>
     <file>icons8-open-file-50.png</file>

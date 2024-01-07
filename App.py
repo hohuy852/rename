@@ -183,4 +183,4 @@ class Ui_MainWindow(object):
         self.actionExport.setText(_translate("MainWindow", "Export"))
         self.actionImport.setText(_translate("MainWindow", "Import"))
         self.actionRename.setText(_translate("MainWindow", "Rename"))
-import resource.icons_rc
+import icons_rc
