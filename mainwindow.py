@@ -126,21 +126,24 @@ class MainWindow(QMainWindow):
             os.rename(old_path, new_path)
             item.setData(new_path, Qt.UserRole + 1)
             item.setText(f"{new_name}_{index}")
-
     def rename_folders_excel(self):
-        items = self.get_sorted_items_by_depth()
         error_log = []  # Create an empty list to store errors
+
         if all(self.model.item(row, 2) is None or self.model.item(row, 2).text() == "" for row in range(self.model.rowCount())):
             # Show a warning if no values in the "New Name" column
             QMessageBox.warning(self, "Warning", "No 'New Name' values provided.")
             return
-        for row, item in enumerate(items):
+
+        # Sort items by depth in descending order
+        items = self.get_sorted_items_by_depth()
+
+        for item in items:
+            row = self.model.findItems(item.text(), Qt.MatchExactly, 1)[0].row()
             name_item = self.model.item(row, 0)
             path_item = self.model.item(row, 1)
             new_name_item = self.model.item(row, 2)
 
             old_path = path_item.data(Qt.UserRole + 1)
-            new_name = new_name_item.text()
 
             # Check if the "New Name" item exists and has a value
             if new_name_item and new_name_item.text() != "":
@@ -159,7 +162,7 @@ class MainWindow(QMainWindow):
 
                             # Update the model data
                             path_item.setData(new_path, Qt.UserRole + 1)
-                            name_item.setText(new_name)
+                            path_item.setText(new_name)
                         except FileExistsError:
                             error_log.append({"path": old_path, "error": f"Error renaming '{old_path}' to '{new_path}': File already exists"})
                 else:
@@ -169,6 +172,7 @@ class MainWindow(QMainWindow):
 
         # Export error log to Excel
         self.export_error_log_to_excel(error_log)
+
 
 
     def export_error_log_to_excel(self, error_log):
