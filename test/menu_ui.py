@@ -532,4 +532,3 @@ class Ui_MainWindow(object):
         self.actionTumblr.setText(_translate("MainWindow", "Tumblr"))
         self.actionCars.setText(_translate("MainWindow", "Cars"))
         self.actionSocial_Media.setText(_translate("MainWindow", "Social Media"))
-import resource_rc

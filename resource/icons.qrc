@@ -2,8 +2,8 @@
   <qresource prefix="icons">
     <file>folder-menu.png</file>
     <file>logout.png</file>
-    <file>profile.png</file>
     <file>support.png</file>
+    <file>profile.png</file>
     <file>export.png</file>
     <file>import.png</file>
     <file>rename.png</file>
