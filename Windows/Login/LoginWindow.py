@@ -8,7 +8,6 @@ import requests, os
 load_dotenv()
 
 class LoginWindow(QMainWindow):
-    custom_signal = pyqtSignal()
     def __init__(self):
         super(LoginWindow, self).__init__()
 
@@ -21,6 +20,16 @@ class LoginWindow(QMainWindow):
         self.closeBtn.clicked.connect(self.closeWindow)
         self.loginBtn.clicked.connect(self.login)
         self.mainwindow = None
+
+    def validateAndLogin(self):
+        username = self.username.text()
+        password = self.password.text()
+
+        if not username or not password:
+            QMessageBox.warning(self, "Validation Error", "Username and password are required.")
+            return
+
+
     def closeWindow(self):
         self.close()
 

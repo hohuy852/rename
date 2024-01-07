@@ -19,17 +19,17 @@ class Login_Window(object):
         self.centralwidget.setObjectName("centralwidget")
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setGeometry(QtCore.QRect(30, 70, 550, 500))
-        self.widget.setStyleSheet("QPushButton#pushButton{\n"
-"    background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(11, 131, 120, 219), stop:1 rgba(85, 98, 112, 226));\n"
+        self.widget.setStyleSheet("QPushButton#loginBtn{\n"
+"     background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(11, 131, 120, 219), stop:1 rgba(85, 98, 112, 226));\n"
 "    color:rgba(255, 255, 255, 210);\n"
 "    border-radius:5px;\n"
 "}\n"
 "\n"
-"QPushButton#pushButton:hover{\n"
+"QPushButton#loginBtn:hover{\n"
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(150, 123, 111, 219), stop:1 rgba(85, 81, 84, 226));\n"
 "}\n"
 "\n"
-"QPushButton#pushButton:pressed{\n"
+"QPushButton#loginBtn:pressed{\n"
 "    padding-left:5px;\n"
 "    padding-top:5px;\n"
 "    background-color:rgba(150, 123, 111, 255);\n"
@@ -112,6 +112,7 @@ class Login_Window(object):
         font.setBold(True)
         font.setWeight(75)
         self.loginBtn.setFont(font)
+        self.loginBtn.setStyleSheet("")
         self.loginBtn.setObjectName("loginBtn")
         self.label_6 = QtWidgets.QLabel(self.widget)
         self.label_6.setGeometry(QtCore.QRect(40, 80, 230, 130))
