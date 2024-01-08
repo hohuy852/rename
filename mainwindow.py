@@ -4,7 +4,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import pandas as pd
 import os
 import openpyxl
-from App import Ui_MainWindow
+from App2 import Ui_MainWindow
 from Dialog.Renaming.RenameWindow import RenameDialog
 from pathlib import Path
         
@@ -17,7 +17,7 @@ class MainWindow(QMainWindow):
 
         # Init Elements
         self.open_btn = self.ui.open_btn
-        self.save_btn = self.ui.save_btn
+        # self.save_btn = self.ui.save_btn
         self.export_btn = self.ui.export_btn
         self.import_btn = self.ui.import_btn
         self.table_view = self.ui.tableView
