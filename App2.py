@@ -206,7 +206,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.label = QtWidgets.QLabel(self.frame_2)
         font = QtGui.QFont()
-        font.setFamily("Montserrat SemiBold")
+        font.setFamily("Poppins SemiBold")
         font.setPointSize(11)
         font.setBold(True)
         self.label.setFont(font)
@@ -411,9 +411,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.main_2)
         self.verticalLayout.addWidget(self.main)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
         self.main_2.setCurrentIndex(0)
@@ -429,7 +426,7 @@ class Ui_MainWindow(object):
         self.about_btn.setText(_translate("MainWindow", "  About"))
         self.logout_btn.setText(_translate("MainWindow", "  Support"))
         self.pushButton_4.setText(_translate("MainWindow", "  Logout"))
-        self.label.setText(_translate("MainWindow", "Function"))
+        self.label.setText(_translate("MainWindow", "Functions"))
         self.open_btn.setToolTip(_translate("MainWindow", "Open"))
         self.label_4.setText(_translate("MainWindow", "Page 2"))
 import icons_rc
