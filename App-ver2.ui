@@ -90,7 +90,9 @@
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true"/>
+             <string notr="true">QPushButton{
+text-align:left;
+}</string>
             </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
@@ -225,7 +227,7 @@
                </layout>
               </widget>
              </item>
-             <item alignment="Qt::AlignLeft">
+             <item>
               <widget class="QPushButton" name="pushButton_5">
                <property name="maximumSize">
                 <size>
@@ -261,7 +263,7 @@
                </property>
               </widget>
              </item>
-             <item alignment="Qt::AlignLeft">
+             <item>
               <widget class="QPushButton" name="pushButton_6">
                <property name="maximumSize">
                 <size>
@@ -321,6 +323,11 @@
               <height>100</height>
              </size>
             </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton{
+text-align:left;
+}</string>
+            </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
             </property>
@@ -341,7 +348,11 @@
                 <string notr="true"/>
                </property>
                <property name="text">
-                <string>About</string>
+                <string>  About</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resource/icons.qrc">
+                 <normaloff>:/icons/profile.png</normaloff>:/icons/profile.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -367,7 +378,11 @@
                 <string notr="true"/>
                </property>
                <property name="text">
-                <string>Support</string>
+                <string>  Support</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resource/icons.qrc">
+                 <normaloff>:/icons/support.png</normaloff>:/icons/support.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -393,7 +408,11 @@
                 <string notr="true"/>
                </property>
                <property name="text">
-                <string>Logout</string>
+                <string>  Logout</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resource/icons.qrc">
+                 <normaloff>:/icons/logout.png</normaloff>:/icons/logout.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -719,8 +738,113 @@ background-color: #fff;
              <layout class="QHBoxLayout" name="horizontalLayout_3">
               <item>
                <widget class="QTableView" name="tableView">
-                <property name="frameShape">
-                 <enum>QFrame::NoFrame</enum>
+                <property name="font">
+                 <font>
+                  <family>Poppins SemiBold</family>
+                  <pointsize>8</pointsize>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QHeaderView::section{
+background-color:rgb(174, 174, 174);
+color: white;
+border: 1px solid #fff;
+text-align:center;
+font-family: 'Poppins SemiBold', sans-serif;
+}
+QScrollBar:vertical {
+	border: none;
+	background: rgb(255, 255, 255);
+	width: 7px;
+	margin: 6px 0 6px 0;
+	border-radius: 0px;
+}
+
+/*  HANDLE BAR VERTICAL */
+QScrollBar::handle:vertical {
+	background-color: rgb(174, 174, 174);
+	min-height: 30px;
+	border-radius: 3px;
+}
+
+QScrollBar::handle:vertical:hover {
+	background-color: rgb(174, 174, 174);
+}
+
+QScrollBar::handle:vertical:pressed {
+	background-color: rgb(174, 174, 174);
+}
+
+/* BTN TOP - SCROLLBAR */
+QScrollBar::sub-line:vertical {
+	border: none;
+	background-color: rgb(105, 105, 105);
+	height: 7px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	subcontrol-position: top;
+	subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical:hover {
+	background-color: rgb(105, 105, 105);
+}
+
+QScrollBar::sub-line:vertical:pressed {
+	background-color: rgb(105, 105, 105);
+}
+
+/* BTN BOTTOM - SCROLLBAR */
+QScrollBar::add-line:vertical {
+	border: none;
+	background-color: rgb(105, 105, 105);
+	height: 7px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	subcontrol-position: bottom;
+	subcontrol-origin: margin;
+}
+
+QScrollBar::add-line:vertical:hover {
+	background-color: rgb(105, 105, 105);
+}
+
+QScrollBar::add-line:vertical:pressed {
+	background-color: rgb(105, 105, 105);
+}
+
+/* RESET ARROW */
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical {
+	background: none;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+	background: none;
+}
+
+/* HORIZONTAL SCROLLBAR - HOMEWORK */
+QScrollBar:horizontal {}
+
+QScrollBar::handle:horizontal {}
+
+QScrollBar::add-line:horizontal {}
+
+QScrollBar::sub-line:horizontal {}
+
+QScrollBar::up-arrow:horizontal,
+QScrollBar::down-arrow:horizontal {}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {}</string>
+                </property>
+                <property name="verticalScrollMode">
+                 <enum>QAbstractItemView::ScrollPerPixel</enum>
+                </property>
+                <property name="horizontalScrollMode">
+                 <enum>QAbstractItemView::ScrollPerPixel</enum>
                 </property>
                </widget>
               </item>
@@ -755,7 +879,6 @@ background-color: #fff;
  </widget>
  <resources>
   <include location="resource/icons.qrc"/>
-  <include location="resource/background.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -41,7 +41,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.top_btns = QtWidgets.QFrame(self.leftnav)
         self.top_btns.setMinimumSize(QtCore.QSize(0, 0))
-        self.top_btns.setStyleSheet("")
+        self.top_btns.setStyleSheet("QPushButton{\n"
+"text-align:left;\n"
+"}")
         self.top_btns.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.top_btns.setFrameShadow(QtWidgets.QFrame.Raised)
         self.top_btns.setObjectName("top_btns")
@@ -110,7 +112,7 @@ class Ui_MainWindow(object):
         self.pushButton_5.setIconSize(QtCore.QSize(25, 25))
         self.pushButton_5.setFlat(True)
         self.pushButton_5.setObjectName("pushButton_5")
-        self.verticalLayout_3.addWidget(self.pushButton_5, 0, QtCore.Qt.AlignLeft)
+        self.verticalLayout_3.addWidget(self.pushButton_5)
         self.pushButton_6 = QtWidgets.QPushButton(self.top_btns)
         self.pushButton_6.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
@@ -125,12 +127,15 @@ class Ui_MainWindow(object):
         self.pushButton_6.setIconSize(QtCore.QSize(25, 25))
         self.pushButton_6.setFlat(True)
         self.pushButton_6.setObjectName("pushButton_6")
-        self.verticalLayout_3.addWidget(self.pushButton_6, 0, QtCore.Qt.AlignLeft)
+        self.verticalLayout_3.addWidget(self.pushButton_6)
         self.verticalLayout_2.addWidget(self.top_btns, 0, QtCore.Qt.AlignTop)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem)
         self.bot_btns = QtWidgets.QFrame(self.leftnav)
         self.bot_btns.setMinimumSize(QtCore.QSize(0, 100))
+        self.bot_btns.setStyleSheet("QPushButton{\n"
+"text-align:left;\n"
+"}")
         self.bot_btns.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.bot_btns.setFrameShadow(QtWidgets.QFrame.Raised)
         self.bot_btns.setObjectName("bot_btns")
@@ -143,6 +148,9 @@ class Ui_MainWindow(object):
         font.setBold(True)
         self.pushButton_2.setFont(font)
         self.pushButton_2.setStyleSheet("")
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/icons/profile.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_2.setIcon(icon2)
         self.pushButton_2.setIconSize(QtCore.QSize(25, 25))
         self.pushButton_2.setFlat(True)
         self.pushButton_2.setObjectName("pushButton_2")
@@ -154,6 +162,9 @@ class Ui_MainWindow(object):
         font.setBold(True)
         self.pushButton_3.setFont(font)
         self.pushButton_3.setStyleSheet("")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/icons/support.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_3.setIcon(icon3)
         self.pushButton_3.setIconSize(QtCore.QSize(25, 25))
         self.pushButton_3.setFlat(True)
         self.pushButton_3.setObjectName("pushButton_3")
@@ -165,6 +176,9 @@ class Ui_MainWindow(object):
         font.setBold(True)
         self.pushButton_4.setFont(font)
         self.pushButton_4.setStyleSheet("")
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/icons/logout.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_4.setIcon(icon4)
         self.pushButton_4.setIconSize(QtCore.QSize(25, 25))
         self.pushButton_4.setFlat(True)
         self.pushButton_4.setObjectName("pushButton_4")
@@ -226,9 +240,9 @@ class Ui_MainWindow(object):
         self.open_btn.setToolTipDuration(-5)
         self.open_btn.setStyleSheet("")
         self.open_btn.setText("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/icons/folder-open.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.open_btn.setIcon(icon2)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/icons/folder-open.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.open_btn.setIcon(icon5)
         self.open_btn.setIconSize(QtCore.QSize(28, 28))
         self.open_btn.setFlat(True)
         self.open_btn.setObjectName("open_btn")
@@ -250,9 +264,9 @@ class Ui_MainWindow(object):
         self.export_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.export_btn.setStyleSheet("")
         self.export_btn.setText("")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/icons/export.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.export_btn.setIcon(icon3)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(":/icons/export.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.export_btn.setIcon(icon6)
         self.export_btn.setIconSize(QtCore.QSize(28, 28))
         self.export_btn.setFlat(True)
         self.export_btn.setObjectName("export_btn")
@@ -263,9 +277,9 @@ class Ui_MainWindow(object):
         self.import_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.import_btn.setStyleSheet("")
         self.import_btn.setText("")
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/icons/import.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.import_btn.setIcon(icon4)
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(":/icons/import.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.import_btn.setIcon(icon7)
         self.import_btn.setIconSize(QtCore.QSize(28, 28))
         self.import_btn.setFlat(True)
         self.import_btn.setObjectName("import_btn")
@@ -284,7 +298,106 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.frame_3)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.tableView = QtWidgets.QTableView(self.frame_3)
-        self.tableView.setFrameShape(QtWidgets.QFrame.NoFrame)
+        font = QtGui.QFont()
+        font.setFamily("Poppins SemiBold")
+        font.setPointSize(8)
+        font.setBold(True)
+        self.tableView.setFont(font)
+        self.tableView.setStyleSheet("QHeaderView::section{\n"
+"background-color:rgb(174, 174, 174);\n"
+"color: white;\n"
+"border: 1px solid #fff;\n"
+"text-align:center;\n"
+"font-family: \'Poppins SemiBold\', sans-serif;\n"
+"}\n"
+"QScrollBar:vertical {\n"
+"    border: none;\n"
+"    background: rgb(255, 255, 255);\n"
+"    width: 7px;\n"
+"    margin: 6px 0 6px 0;\n"
+"    border-radius: 0px;\n"
+"}\n"
+"\n"
+"/*  HANDLE BAR VERTICAL */\n"
+"QScrollBar::handle:vertical {\n"
+"    background-color: rgb(174, 174, 174);\n"
+"    min-height: 30px;\n"
+"    border-radius: 3px;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:vertical:hover {\n"
+"    background-color: rgb(174, 174, 174);\n"
+"}\n"
+"\n"
+"QScrollBar::handle:vertical:pressed {\n"
+"    background-color: rgb(174, 174, 174);\n"
+"}\n"
+"\n"
+"/* BTN TOP - SCROLLBAR */\n"
+"QScrollBar::sub-line:vertical {\n"
+"    border: none;\n"
+"    background-color: rgb(105, 105, 105);\n"
+"    height: 7px;\n"
+"    border-top-left-radius: 3px;\n"
+"    border-top-right-radius: 3px;\n"
+"    subcontrol-position: top;\n"
+"    subcontrol-origin: margin;\n"
+"}\n"
+"\n"
+"QScrollBar::sub-line:vertical:hover {\n"
+"    background-color: rgb(105, 105, 105);\n"
+"}\n"
+"\n"
+"QScrollBar::sub-line:vertical:pressed {\n"
+"    background-color: rgb(105, 105, 105);\n"
+"}\n"
+"\n"
+"/* BTN BOTTOM - SCROLLBAR */\n"
+"QScrollBar::add-line:vertical {\n"
+"    border: none;\n"
+"    background-color: rgb(105, 105, 105);\n"
+"    height: 7px;\n"
+"    border-bottom-left-radius: 3px;\n"
+"    border-bottom-right-radius: 3px;\n"
+"    subcontrol-position: bottom;\n"
+"    subcontrol-origin: margin;\n"
+"}\n"
+"\n"
+"QScrollBar::add-line:vertical:hover {\n"
+"    background-color: rgb(105, 105, 105);\n"
+"}\n"
+"\n"
+"QScrollBar::add-line:vertical:pressed {\n"
+"    background-color: rgb(105, 105, 105);\n"
+"}\n"
+"\n"
+"/* RESET ARROW */\n"
+"QScrollBar::up-arrow:vertical,\n"
+"QScrollBar::down-arrow:vertical {\n"
+"    background: none;\n"
+"}\n"
+"\n"
+"QScrollBar::add-page:vertical,\n"
+"QScrollBar::sub-page:vertical {\n"
+"    background: none;\n"
+"}\n"
+"\n"
+"/* HORIZONTAL SCROLLBAR - HOMEWORK */\n"
+"QScrollBar:horizontal {}\n"
+"\n"
+"QScrollBar::handle:horizontal {}\n"
+"\n"
+"QScrollBar::add-line:horizontal {}\n"
+"\n"
+"QScrollBar::sub-line:horizontal {}\n"
+"\n"
+"QScrollBar::up-arrow:horizontal,\n"
+"QScrollBar::down-arrow:horizontal {}\n"
+"\n"
+"QScrollBar::add-page:horizontal,\n"
+"QScrollBar::sub-page:horizontal {}")
+        self.tableView.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+        self.tableView.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
         self.tableView.setObjectName("tableView")
         self.horizontalLayout_3.addWidget(self.tableView)
         self.verticalLayout_4.addWidget(self.frame_3)
@@ -313,9 +426,9 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "syhuy851"))
         self.pushButton_5.setText(_translate("MainWindow", "  Renamer"))
         self.pushButton_6.setText(_translate("MainWindow", "  Pdf Counter"))
-        self.pushButton_2.setText(_translate("MainWindow", "About"))
-        self.pushButton_3.setText(_translate("MainWindow", "Support"))
-        self.pushButton_4.setText(_translate("MainWindow", "Logout"))
+        self.pushButton_2.setText(_translate("MainWindow", "  About"))
+        self.pushButton_3.setText(_translate("MainWindow", "  Support"))
+        self.pushButton_4.setText(_translate("MainWindow", "  Logout"))
         self.label.setText(_translate("MainWindow", "Function"))
         self.open_btn.setToolTip(_translate("MainWindow", "Open"))
         self.label_4.setText(_translate("MainWindow", "Page 2"))
