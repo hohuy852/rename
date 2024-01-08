@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog,QMainWindow,QMessageBox
+from PyQt5.QtWidgets import QDialog,QMainWindow,QMessageBox,QApplication
 from Windows.Login.Login import Login_Window
 from PyQt5.QtCore import pyqtSignal, Qt
 from mainwindow import MainWindow
@@ -17,22 +17,22 @@ class LoginWindow(QMainWindow):
         self.loginBtn = self.ui.loginBtn
         self.username = self.ui.username
         self.password = self.ui.password
+        self.warning = self.ui.warning
         self.closeBtn.clicked.connect(self.closeWindow)
         self.loginBtn.clicked.connect(self.login)
         self.mainwindow = None
-
-    def validateAndLogin(self):
-        username = self.username.text()
-        password = self.password.text()
-
-        if not username or not password:
-            QMessageBox.warning(self, "Validation Error", "Username and password are required.")
-            return
-
-
+        
     def closeWindow(self):
         self.close()
 
+    def keyPressEvent(self, event):
+        # Check if the pressed key is Enter (Return)
+        if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
+            # Check if both username and password fields are non-empty
+            if self.username.text() and self.password.text():
+                # Call the login method when Enter key is pressed and both fields are non-empty
+                self.login()
+    
     def login(self):
         username = self.username.text()
         password = self.password.text()
@@ -42,7 +42,12 @@ class LoginWindow(QMainWindow):
         headers = {
             "Content-Type": "application/json"
         }
+        if not username or not password:
+            self.warning.setText("Missing username or password")
+            return
         try:
+            self.loginBtn.setText("Logging in...") 
+            QApplication.processEvents()
             response = requests.post(api_url,  data=json.dumps(data), headers=headers)
             parsed_response = json.loads(response.text)
             if 'statusCode' in parsed_response and parsed_response['statusCode'] == 200:
@@ -56,11 +61,13 @@ class LoginWindow(QMainWindow):
 
             else:
                 # Handle unsuccessful login (e.g., show an error message)
-                QMessageBox.warning(self, "Warning", "login fail.")
+                self.warning.setText("Wrong username or password")
                 print(f"Login failed. Status code: {response}")
         except Exception as e:
             # Handle exceptions (e.g., network error)
-            QMessageBox.warning(self, "Warning", "error.")
+            self.warning.setText("An error occur !")
             print(f"Error during login: {str(e)}")
+        finally:
+            self.loginBtn.setText("Log In")
 
 

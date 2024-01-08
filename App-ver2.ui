@@ -119,6 +119,9 @@ text-align:left;
                 <enum>QFrame::Raised</enum>
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
                 <property name="rightMargin">
                  <number>0</number>
                 </property>
@@ -228,7 +231,7 @@ text-align:left;
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_5">
+              <widget class="QPushButton" name="renamer_btn">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -264,7 +267,7 @@ text-align:left;
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_6">
+              <widget class="QPushButton" name="pdfcounter_btn">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -336,7 +339,7 @@ text-align:left;
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">
              <item>
-              <widget class="QPushButton" name="pushButton_2">
+              <widget class="QPushButton" name="about_btn">
                <property name="font">
                 <font>
                  <family>Montserrat SemiBold</family>
@@ -366,7 +369,7 @@ text-align:left;
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_3">
+              <widget class="QPushButton" name="logout_btn">
                <property name="font">
                 <font>
                  <family>Montserrat SemiBold</family>

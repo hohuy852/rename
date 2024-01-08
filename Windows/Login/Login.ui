@@ -122,8 +122,8 @@ border-bottom-right-radius: 50px;</string>
      </property>
      <property name="font">
       <font>
+       <family>Poppins SemiBold</family>
        <pointsize>20</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -145,6 +145,7 @@ border-bottom-right-radius: 50px;</string>
      </property>
      <property name="font">
       <font>
+       <family>Poppins Medium</family>
        <pointsize>10</pointsize>
       </font>
      </property>
@@ -170,6 +171,7 @@ padding-bottom:7px;</string>
      </property>
      <property name="font">
       <font>
+       <family>Poppins Medium</family>
        <pointsize>10</pointsize>
       </font>
      </property>
@@ -198,8 +200,8 @@ padding-bottom:7px;</string>
      </property>
      <property name="font">
       <font>
+       <family>Poppins SemiBold</family>
        <pointsize>11</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -237,8 +239,8 @@ padding-bottom:7px;</string>
      </property>
      <property name="font">
       <font>
+       <family>Poppins SemiBold</family>
        <pointsize>22</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -246,7 +248,7 @@ padding-bottom:7px;</string>
       <string notr="true">color:rgba(255, 255, 255, 200);</string>
      </property>
      <property name="text">
-      <string>SihinaCODE</string>
+      <string>Data Tools</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_8">
@@ -261,7 +263,6 @@ padding-bottom:7px;</string>
      <property name="font">
       <font>
        <pointsize>10</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -269,9 +270,7 @@ padding-bottom:7px;</string>
       <string notr="true">color:rgba(255, 255, 255, 170);</string>
      </property>
      <property name="text">
-      <string>Hi,
-Welcome to my youtube channel.
-Don't forget to subscribe.</string>
+      <string>Copyright to hohuy852</string>
      </property>
     </widget>
     <widget class="QPushButton" name="closeBtn">
@@ -296,8 +295,38 @@ Don't forget to subscribe.</string>
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../resource/background.qrc">
+      <iconset>
        <normaloff>:/background/close.png</normaloff>:/background/close.png</iconset>
+     </property>
+    </widget>
+    <widget class="QLabel" name="warning">
+     <property name="geometry">
+      <rect>
+       <x>298</x>
+       <y>267</y>
+       <width>181</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins Medium</family>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(212, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </widget>
@@ -308,7 +337,7 @@ Don't forget to subscribe.</string>
      <x>0</x>
      <y>0</y>
      <width>612</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
