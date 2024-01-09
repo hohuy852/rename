@@ -8,6 +8,7 @@ import requests, os
 load_dotenv()
 
 class LoginWindow(QMainWindow):
+    username_signal = pyqtSignal(str)
     def __init__(self):
         super(LoginWindow, self).__init__()
 
@@ -50,13 +51,15 @@ class LoginWindow(QMainWindow):
             QApplication.processEvents()
             response = requests.post(api_url,  data=json.dumps(data), headers=headers)
             parsed_response = json.loads(response.text)
+            print(parsed_response)
             if 'statusCode' in parsed_response and parsed_response['statusCode'] == 200:
+                body = json.loads(parsed_response['body'])
+                logged_username = body.get('username', None)
 
                 self.close()
-
                 # Show the MainWindow only if it's not already created
                 if not self.mainwindow:
-                    self.mainwindow = MainWindow()
+                    self.mainwindow = MainWindow(logged_username)
                     self.mainwindow.show()
 
             else:

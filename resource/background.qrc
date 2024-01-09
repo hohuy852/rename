@@ -2,7 +2,6 @@
   <qresource prefix="background">
     <file>background.jpg</file>
     <file>bg2.jpg</file>
-    <file>bg3.jpg</file>
     <file>close.png</file>
   </qresource>
 </RCC>

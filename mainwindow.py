@@ -9,8 +9,9 @@ from Dialog.Renaming.RenameWindow import RenameDialog
 from pathlib import Path
         
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, logged_username):
         super(MainWindow, self).__init__()
+
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -21,6 +22,7 @@ class MainWindow(QMainWindow):
         self.export_btn = self.ui.export_btn
         self.import_btn = self.ui.import_btn
         self.table_view = self.ui.tableView
+        self.username = self.ui.name
         self.rename_btn = self.ui.rename_btn
         # Connect signals and slots
         self.open_btn.clicked.connect(self.show_folder_dialog)
@@ -31,6 +33,8 @@ class MainWindow(QMainWindow):
         # Create a standard item model for the table view
         self.model = QStandardItemModel()
         self.table_view.setModel(self.model)
+        
+        self.username.setText(logged_username)
 
     def show_rename_dialog(self):
         if self.model.rowCount() == 0:
@@ -126,6 +130,7 @@ class MainWindow(QMainWindow):
             os.rename(old_path, new_path)
             item.setData(new_path, Qt.UserRole + 1)
             item.setText(f"{new_name}_{index}")
+
     def rename_folders_excel(self):
         error_log = []  # Create an empty list to store errors
 
@@ -257,10 +262,10 @@ class MainWindow(QMainWindow):
                 path_item = QStandardItem(str(row[0]))
                 path_item.setData(str(row[0]), Qt.UserRole + 1)  # Set the path in UserRole+1
                 items.append(path_item)
-
+                name_item = QStandardItem(str(row[1]))
                 row_items = [
                     QStandardItem(str(row[0])),  # "Path" column
-                    path_item,  # "Name" column
+                    name_item,  # "Name" column
                     QStandardItem(str(new_name_value))  # "New Name" column
                 ]
                 self.model.appendRow(row_items)
@@ -270,7 +275,6 @@ class MainWindow(QMainWindow):
             header.setSectionResizeMode(0, QHeaderView.Stretch)  # Path column takes the remaining space
             header.setSectionResizeMode(1, QHeaderView.ResizeToContents)  # Name column adjusts to content
             header.setSectionResizeMode(2, QHeaderView.ResizeToContents)  # New Name column adjusts to content
-
             # No sorting here
 
             workbook.close()

@@ -19,7 +19,7 @@ class RenameDialog(QDialog):
 
         # frame
         self.inputFrame = self.ui.frame_2
-        self.choicesFrame = self.ui.frame_5
+        # self.choicesFrame = self.ui.frame_5
 
         # radio
         self.custom = self.ui.custom
@@ -49,4 +49,4 @@ class RenameDialog(QDialog):
 
     def show_hide_frame(self, checked):
         self.inputFrame.setVisible(checked)
-        self.choicesFrame .setVisible(checked)
+        # self.choicesFrame .setVisible(checked)

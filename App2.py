@@ -86,16 +86,16 @@ class Ui_MainWindow(object):
         self.label_2.setStyleSheet("color: rgb(202, 202, 202);")
         self.label_2.setObjectName("label_2")
         self.verticalLayout_7.addWidget(self.label_2, 0, QtCore.Qt.AlignBottom)
-        self.label_3 = QtWidgets.QLabel(self.frame)
-        self.label_3.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.name = QtWidgets.QLabel(self.frame)
+        self.name.setMaximumSize(QtCore.QSize(16777215, 20))
         font = QtGui.QFont()
         font.setFamily("Poppins ExtraBold")
         font.setPointSize(11)
         font.setBold(True)
-        self.label_3.setFont(font)
-        self.label_3.setWordWrap(False)
-        self.label_3.setObjectName("label_3")
-        self.verticalLayout_7.addWidget(self.label_3, 0, QtCore.Qt.AlignTop)
+        self.name.setFont(font)
+        self.name.setWordWrap(False)
+        self.name.setObjectName("name")
+        self.verticalLayout_7.addWidget(self.name, 0, QtCore.Qt.AlignTop)
         self.horizontalLayout_4.addWidget(self.frame)
         self.verticalLayout_3.addWidget(self.info)
         self.renamer_btn = QtWidgets.QPushButton(self.top_btns)
@@ -309,6 +309,7 @@ class Ui_MainWindow(object):
 "border: 1px solid #fff;\n"
 "text-align:center;\n"
 "font-family: \'Poppins SemiBold\', sans-serif;\n"
+"width: 100%;\n"
 "}\n"
 "QScrollBar:vertical {\n"
 "    border: none;\n"
@@ -420,7 +421,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_2.setText(_translate("MainWindow", "Welcome back,"))
-        self.label_3.setText(_translate("MainWindow", "syhuy851"))
+        self.name.setText(_translate("MainWindow", "syhuy851"))
         self.renamer_btn.setText(_translate("MainWindow", "  Renamer"))
         self.pdfcounter_btn.setText(_translate("MainWindow", "  Pdf Counter"))
         self.about_btn.setText(_translate("MainWindow", "  About"))

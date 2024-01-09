@@ -202,7 +202,7 @@ text-align:left;
                     </widget>
                    </item>
                    <item alignment="Qt::AlignTop">
-                    <widget class="QLabel" name="label_3">
+                    <widget class="QLabel" name="name">
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
@@ -755,6 +755,7 @@ color: white;
 border: 1px solid #fff;
 text-align:center;
 font-family: 'Poppins SemiBold', sans-serif;
+width: 100%;
 }
 QScrollBar:vertical {
 	border: none;

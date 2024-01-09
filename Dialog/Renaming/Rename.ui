@@ -31,6 +31,11 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <family>Poppins Medium</family>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true">border-color: rgb(0, 0, 0);</string>
         </property>
@@ -40,6 +45,11 @@
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="QRadioButton" name="custom">
+           <property name="font">
+            <font>
+             <family>Poppins Medium</family>
+            </font>
+           </property>
            <property name="text">
             <string>Custom from template</string>
            </property>
@@ -50,6 +60,11 @@
          </item>
          <item>
           <widget class="QRadioButton" name="manual">
+           <property name="font">
+            <font>
+             <family>Poppins Medium</family>
+            </font>
+           </property>
            <property name="text">
             <string>Auto</string>
            </property>
@@ -75,6 +90,11 @@
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
              <widget class="QLabel" name="label">
+              <property name="font">
+               <font>
+                <family>Poppins Medium</family>
+               </font>
+              </property>
               <property name="text">
                <string>Name</string>
               </property>
@@ -82,13 +102,14 @@
             </item>
             <item>
              <widget class="QLineEdit" name="newName">
+              <property name="font">
+               <font>
+                <family>Poppins Medium</family>
+               </font>
+              </property>
               <property name="styleSheet">
-               <string notr="true">QLineEdit{
-	border: 1px solid #000;
-	border-radius: 3px;
-	font-size: 14px;
-	padding: 0 3px;
-}</string>
+               <string notr="true">border: 1px solid #000;
+border-radius: 3px;</string>
               </property>
              </widget>
             </item>
@@ -96,91 +117,22 @@
           </widget>
          </item>
          <item>
-          <widget class="QFrame" name="frame_5">
-           <property name="maximumSize">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
             <size>
-             <width>16777215</width>
-             <height>16777215</height>
+             <width>20</width>
+             <height>40</height>
             </size>
            </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QFrame" name="frame_6">
-              <property name="maximumSize">
-               <size>
-                <width>52</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
-              <widget class="QLabel" name="label_2">
-               <property name="geometry">
-                <rect>
-                 <x>22</x>
-                 <y>-2</y>
-                 <width>28</width>
-                 <height>16</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>Prefix</string>
-               </property>
-              </widget>
-             </widget>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <item>
-               <widget class="QRadioButton" name="radioButton">
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="radioButton_4">
-                <property name="text">
-                 <string>Index</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="radioButton_3">
-                <property name="text">
-                 <string>Name + index</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QFrame" name="frame_3">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-          </widget>
+          </spacer>
          </item>
         </layout>
        </widget>
       </item>
-      <item>
+      <item alignment="Qt::AlignRight">
        <widget class="QFrame" name="frame_4">
         <property name="maximumSize">
          <size>
@@ -194,32 +146,49 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QPushButton" name="cancel_btn">
-         <property name="geometry">
-          <rect>
-           <x>283</x>
-           <y>10</y>
-           <width>75</width>
-           <height>23</height>
-          </rect>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <property name="spacing">
+          <number>0</number>
          </property>
-         <property name="text">
-          <string>Cancel</string>
+         <property name="leftMargin">
+          <number>0</number>
          </property>
-        </widget>
-        <widget class="QPushButton" name="confirm_btn">
-         <property name="geometry">
-          <rect>
-           <x>200</x>
-           <y>10</y>
-           <width>75</width>
-           <height>23</height>
-          </rect>
+         <property name="topMargin">
+          <number>0</number>
          </property>
-         <property name="text">
-          <string>Confirm</string>
+         <property name="rightMargin">
+          <number>0</number>
          </property>
-        </widget>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="confirm_btn">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Confirm</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cancel_btn">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Cancel</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
