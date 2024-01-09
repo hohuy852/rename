@@ -140,6 +140,7 @@ class Ui_MainWindow(object):
         self.bot_btns.setFrameShadow(QtWidgets.QFrame.Raised)
         self.bot_btns.setObjectName("bot_btns")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.bot_btns)
+        self.verticalLayout_6.setContentsMargins(0, -1, -1, -1)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.about_btn = QtWidgets.QPushButton(self.bot_btns)
         font = QtGui.QFont()

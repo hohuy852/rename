@@ -83,7 +83,7 @@ class MainWindow(QMainWindow):
         # Set header width to 50% for each column
         header = self.table_view.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.Stretch)  # File Name column takes the remaining space
-        header.setSectionResizeMode(1, QHeaderView.Stretch)  # File Path column takes the remaining space
+        header.setSectionResizeMode(1, QHeaderView.ResizeToContents)  # File Path column takes the remaining space
         header.setSectionResizeMode(2, QHeaderView.ResizeToContents)  # New Name column adjusts to content
 
         # Add files to the model
