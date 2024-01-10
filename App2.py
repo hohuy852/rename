@@ -310,7 +310,6 @@ class Ui_MainWindow(object):
 "border: 1px solid #fff;\n"
 "text-align:center;\n"
 "font-family: \'Poppins SemiBold\', sans-serif;\n"
-"width: 100%;\n"
 "}\n"
 "QScrollBar:vertical {\n"
 "    border: none;\n"

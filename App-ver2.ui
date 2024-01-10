@@ -758,7 +758,6 @@ color: white;
 border: 1px solid #fff;
 text-align:center;
 font-family: 'Poppins SemiBold', sans-serif;
-width: 100%;
 }
 QScrollBar:vertical {
 	border: none;
