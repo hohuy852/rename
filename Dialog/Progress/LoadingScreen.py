@@ -79,15 +79,3 @@ class LoadingScreen(QMainWindow):
 
         # APPLY STYLESHEET WITH NEW VALUES
         self.ui.circularProgress.setStyleSheet(newStylesheet)
-
-# if __name__ == "__main__":
-#     app = QApplication(sys.argv)
-#     window = LoadingScreen()
-#     window.show()
-#     # # Using a for loop to simulate progress
-#     # for i in range(101):
-#     #     window.progress(i)
-#     #     time.sleep(0.1)  # Simulate some processing time
-#     #     app.processEvents()  # Allow the application to process events
-
-#     sys.exit(app.exec_())
