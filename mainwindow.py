@@ -6,7 +6,6 @@ import os
 import openpyxl
 from App2 import Ui_MainWindow
 from Dialog.Renaming.RenameWindow import RenameDialog
-from Dialog.Progress.LoadingScreen import LoadingScreen
 from pathlib import Path
         
 class MainWindow(QMainWindow):
@@ -92,8 +91,6 @@ class MainWindow(QMainWindow):
         self.add_files_to_model(folder_path)
 
     def add_files_to_model(self, folder_path):
-        loading_screen = LoadingScreen()
-        loading_screen.show()
         total_files = sum(len(files) for _, _, files in os.walk(folder_path))
         loaded_files = 0
 
@@ -113,13 +110,8 @@ class MainWindow(QMainWindow):
 
                 # Update progress
                 loaded_files += 1
-                print(f"File {loaded_files}/{total_files} loaded: {file_path}")
                 percent = loaded_files / total_files * 100
-                QApplication.processEvents()
-                loading_screen.progress(percent)
-
         print("Loading files completed.")
-        loading_screen.close()
 
     def rename_folders(self,new_name):
         items = self.get_sorted_items_by_depth()
