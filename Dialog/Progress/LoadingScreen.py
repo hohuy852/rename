@@ -1,12 +1,12 @@
 from PyQt5.QtWidgets import QMainWindow, QGraphicsDropShadowEffect, QApplication
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
-from circle import CircleProgress  # Make sure this is the correct import for your CircleProgress class
+from Dialog.Progress.circle import CircleProgress  # Make sure this is the correct import for your CircleProgress class
 import sys
 
 class LoadingScreen(QMainWindow):
     def __init__(self):
-        QMainWindow.__init__(self)
+        super(LoadingScreen, self).__init__()
         self.ui = CircleProgress()
         self.ui.setupUi(self)
 
@@ -15,8 +15,7 @@ class LoadingScreen(QMainWindow):
 
         ## ==> REMOVE STANDARD TITLE BAR
         self.setWindowFlags(Qt.FramelessWindowHint)  # Remove title bar
-        self.setAttribute(Qt.WA_TranslucentBackground
-        )  # Set background to transparent
+        self.setAttribute(Qt.WA_TranslucentBackground)  # Set background to transparent
 
         ## ==> APPLY DROP SHADOW EFFECT
         self.shadow = QGraphicsDropShadowEffect(self)
@@ -26,58 +25,32 @@ class LoadingScreen(QMainWindow):
         self.shadow.setColor(QColor(0, 0, 0, 120))
         self.ui.circularBg.setGraphicsEffect(self.shadow)
 
-        ## QTIMER ==> START
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.progress)
-        # TIMER IN MILLISECONDS
-        self.timer.start(15)
-
-        ## SHOW ==> MAIN WINDOW
-        ########################################################################
-        self.show()
-        ## ==> END ##
-
         # Initialize counters
         self.counter = 0
-        self.jumper = 1
 
     ## DEF TO LOADING
     ########################################################################
-    def progress(self):
-        value = self.counter
-
+    def progress(self, value):
         # HTML TEXT PERCENTAGE
         htmlText = """<p><span style=" font-size:68pt;">{VALUE}</span><span style=" font-size:58pt; vertical-align:super;">%</span></p>"""
 
         # REPLACE VALUE
-        newHtml = htmlText.replace("{VALUE}", str(self.jumper))
-
-        if value > self.jumper:
-            # APPLY NEW PERCENTAGE TEXT
-            self.ui.labelPercentage.setText(newHtml)
-            self.jumper += 1
+        newHtml = htmlText.replace("{VALUE}", str(value))
 
         # SET VALUE TO PROGRESS BAR
         # fix max value error if > than 100
         if value >= 100:
-            value = 1.000
+            value = 100
         self.progressBarValue(value)
+        self.ui.labelPercentage.setText(newHtml) 
 
         # CLOSE SPLASH SCREEN AND OPEN APP
-        if self.counter > 100:
-            # STOP TIMER
-            self.timer.stop()
-
+        if value == 100:
             # SHOW MAIN WINDOW
-            print("100%")
             # CLOSE SPLASH SCREEN
             self.close()
 
-        # INCREASE COUNTER
-        self.counter += 0.5
-
     ## DEF PROGRESS BAR VALUE
-    ########################################################################
     def progressBarValue(self, value):
         # PROGRESSBAR STYLESHEET BASE
         styleSheet = """
@@ -88,22 +61,33 @@ class LoadingScreen(QMainWindow):
         """
 
         # GET PROGRESS BAR VALUE, CONVERT TO FLOAT AND INVERT VALUES
-        # stop works of 1.000 to 0.000
-        progress = (100 - value) / 100.0
+        # stop works from 1.000 to 0.000
+        progress = 1.0 - (value / 100.0)
 
         # GET NEW VALUES
         stop_1 = str(progress - 0.001)
         stop_2 = str(progress)
 
+        # Ensure that stop values are within the range 0 to 1
+        stop_1 = max(0, min(1, float(stop_1)))
+        stop_2 = max(0, min(1, float(stop_2)))
+
         # SET VALUES TO NEW STYLESHEET
-        newStylesheet = styleSheet.replace("{STOP_1}", stop_1).replace(
-            "{STOP_2}", stop_2
+        newStylesheet = styleSheet.replace("{STOP_1}", str(stop_1)).replace(
+            "{STOP_2}", str(stop_2)
         )
 
         # APPLY STYLESHEET WITH NEW VALUES
         self.ui.circularProgress.setStyleSheet(newStylesheet)
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = LoadingScreen()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     window = LoadingScreen()
+#     window.show()
+#     # # Using a for loop to simulate progress
+#     # for i in range(101):
+#     #     window.progress(i)
+#     #     time.sleep(0.1)  # Simulate some processing time
+#     #     app.processEvents()  # Allow the application to process events
+
+#     sys.exit(app.exec_())
