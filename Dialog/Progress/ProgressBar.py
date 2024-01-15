@@ -15,12 +15,15 @@ class ProgressBar(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(323, 73)
+        Dialog.setStyleSheet("border-radius: 20px;")
         self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(Dialog)
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         self.frame.setFont(font)
+        self.frame.setStyleSheet("border-radius: 4px;\n"
+"background: #fff;")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
