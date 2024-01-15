@@ -126,7 +126,6 @@ class MainWindow(QMainWindow):
         self.loading.show()
         self.load_files_thread.progress_updated.connect(self.loading.loadingBar.setValue)
         self.load_files_thread.loading_completed.connect(self.loading_completed)
-        self.load_files_thread.loading_completed.connect(self.loading.accept)
         self.load_files_thread.start()
 
         # Add files to the model
@@ -136,7 +135,7 @@ class MainWindow(QMainWindow):
         self.ui.progressBar.setValue(value) 
 
     def loading_completed(self):
-        print("Loading files completed.")
+        self.load_files_thread.loading_completed.connect(self.loading.accept)
 
     def add_files_to_model(self, folder_path):
         total_files = sum(len(files) for _, _, files in os.walk(folder_path))
