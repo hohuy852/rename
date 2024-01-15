@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class ProgressBar(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(323, 72)
+        Dialog.resize(323, 73)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(Dialog)
@@ -42,7 +42,7 @@ class ProgressBar(object):
 "  border-radius: 6px; \n"
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 170, 255, 255), stop:0.99866 rgba(85, 170, 255, 255));\n"
 "}")
-        self.progressBar.setProperty("value", 24)
+        self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         self.verticalLayout.addWidget(self.progressBar)
         self.horizontalLayout.addWidget(self.frame)

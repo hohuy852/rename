@@ -1,13 +1,46 @@
 from PyQt5.QtWidgets import QMainWindow, QFileDialog,QHeaderView,QMessageBox,QApplication
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal, QThread
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import pandas as pd
 import os
 import openpyxl
 from App2 import Ui_MainWindow
 from Dialog.Renaming.RenameWindow import RenameDialog
+from Dialog.Progress.LoadingScreen import LoadingScreen
 from pathlib import Path
-        
+
+class LoadFilesThread(QThread):
+    progress_updated = pyqtSignal(int)  # Signal to update the progress bar
+    loading_completed = pyqtSignal()
+
+    def __init__(self, folder_path):
+        super(LoadFilesThread, self).__init__()
+        self.folder_path = folder_path
+
+    def run(self):
+        total_files = sum(len(files) for _, _, files in os.walk(self.folder_path))
+        loaded_files = 0
+
+        for root, dirs, files in os.walk(self.folder_path):
+            for file_name in files:
+                file_path = os.path.join(root, file_name)
+
+                # Create QStandardItems for file name and file path
+                file_name_item = QStandardItem(file_name)
+                file_path_item = QStandardItem(file_path)
+
+                # Set data for file path in UserRole + 1
+                file_path_item.setData(file_path, Qt.UserRole + 1)
+
+                # Append the items to the model
+                self.model.appendRow([file_path_item, file_name_item])
+
+                # Update progress
+                loaded_files += 1
+                percent = loaded_files / total_files * 100
+                self.progress_updated.emit(int(percent))
+
+        self.loading_completed.emit()        
 class MainWindow(QMainWindow):
     def __init__(self, logged_username):
         super(MainWindow, self).__init__()
@@ -15,7 +48,7 @@ class MainWindow(QMainWindow):
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
+        self.loading = LoadingScreen(self)
         # Init Elements
         self.open_btn = self.ui.open_btn
         # self.save_btn = self.ui.save_btn
@@ -87,8 +120,23 @@ class MainWindow(QMainWindow):
         header.setSectionResizeMode(1, QHeaderView.ResizeToContents)  # File Path column takes the remaining space
         header.setSectionResizeMode(2, QHeaderView.ResizeToContents)  # New Name column adjusts to content
 
+        # Create and start the thread
+        self.load_files_thread = LoadFilesThread(folder_path)
+        self.load_files_thread.model = self.model
+        self.loading.show()
+        self.load_files_thread.progress_updated.connect(self.loading.loadingBar.setValue)
+        self.load_files_thread.loading_completed.connect(self.loading_completed)
+        self.load_files_thread.loading_completed.connect(self.loading.accept)
+        self.load_files_thread.start()
+
         # Add files to the model
-        self.add_files_to_model(folder_path)
+        # self.add_files_to_model(folder_path)
+
+    def update_progress_bar(self, value):
+        self.ui.progressBar.setValue(value) 
+
+    def loading_completed(self):
+        print("Loading files completed.")
 
     def add_files_to_model(self, folder_path):
         total_files = sum(len(files) for _, _, files in os.walk(folder_path))
