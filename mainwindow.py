@@ -131,34 +131,9 @@ class MainWindow(QMainWindow):
         # Add files to the model
         # self.add_files_to_model(folder_path)
 
-    def update_progress_bar(self, value):
-        self.ui.progressBar.setValue(value) 
-
     def loading_completed(self):
+        self.loading.loadingBar.setValue(0)
         self.loading.hide()
-        
-    def add_files_to_model(self, folder_path):
-        total_files = sum(len(files) for _, _, files in os.walk(folder_path))
-        loaded_files = 0
-
-        for root, dirs, files in os.walk(folder_path):
-            for file_name in files:
-                file_path = os.path.join(root, file_name)
-
-                # Create QStandardItems for file name and file path
-                file_name_item = QStandardItem(file_name)
-                file_path_item = QStandardItem(file_path)
-
-                # Set data for file path in UserRole + 1
-                file_path_item.setData(file_path, Qt.UserRole + 1)
-
-                # Append the items to the model
-                self.model.appendRow([file_path_item, file_name_item])
-
-                # Update progress
-                loaded_files += 1
-                percent = loaded_files / total_files * 100
-        print("Loading files completed.")
 
     def rename_folders(self,new_name):
         items = self.get_sorted_items_by_depth()

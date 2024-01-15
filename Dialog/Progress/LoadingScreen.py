@@ -8,5 +8,5 @@ class LoadingScreen(QDialog):
         self.ui = ProgressBar()
         self.setFixedSize(323, 72)
         self.ui.setupUi(self)
-        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowFlag(Qt.FramelessWindowHint)
         self.loadingBar = self.ui.progressBar
