@@ -135,8 +135,8 @@ class MainWindow(QMainWindow):
         self.ui.progressBar.setValue(value) 
 
     def loading_completed(self):
-        self.load_files_thread.loading_completed.connect(self.loading.accept)
-
+        self.loading.hide()
+        
     def add_files_to_model(self, folder_path):
         total_files = sum(len(files) for _, _, files in os.walk(folder_path))
         loaded_files = 0
