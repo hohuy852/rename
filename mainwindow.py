@@ -1,13 +1,20 @@
-from PyQt5.QtWidgets import QMainWindow, QFileDialog,QHeaderView,QMessageBox,QApplication
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
-import pandas as pd
 import os
 import openpyxl
+from PyQt5.QtWidgets import (
+    QMainWindow,
+    QFileDialog,
+    QHeaderView,
+    QMessageBox,
+    QApplication,
+)
+from PyQt5.QtCore import Qt, pyqtSignal, QThread
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from App2 import Ui_MainWindow
 from Dialog.Renaming.RenameWindow import RenameDialog
 from Dialog.Progress.LoadingScreen import LoadingScreen
+from Dialog.Select.SelectWindow import TypeDialog
 from pathlib import Path
+
 
 class LoadFilesThread(QThread):
     progress_updated = pyqtSignal(int)  # Signal to update the progress bar
@@ -40,15 +47,17 @@ class LoadFilesThread(QThread):
                 percent = loaded_files / total_files * 100
                 self.progress_updated.emit(int(percent))
 
-        self.loading_completed.emit()        
+        self.loading_completed.emit()
+
+
 class MainWindow(QMainWindow):
     def __init__(self, logged_username):
         super(MainWindow, self).__init__()
 
-
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.loading = LoadingScreen(self)
+        self.selectDialog = TypeDialog(self)
         # Init Elements
         self.open_btn = self.ui.open_btn
         # self.save_btn = self.ui.save_btn
@@ -58,7 +67,7 @@ class MainWindow(QMainWindow):
         self.username = self.ui.name
         self.rename_btn = self.ui.rename_btn
         # Connect signals and slots
-        self.open_btn.clicked.connect(self.show_folder_dialog)
+        self.open_btn.clicked.connect(self.show_type_dialog)
         # self.save_btn.clicked.connect(self.rename_folders_excel)
         self.rename_btn.clicked.connect(self.show_rename_dialog)
         self.export_btn.clicked.connect(self.export_to_xlsx)
@@ -66,7 +75,6 @@ class MainWindow(QMainWindow):
         # Create a standard item model for the table view
         self.model = QStandardItemModel()
         self.table_view.setModel(self.model)
-        
         self.username.setText(logged_username)
 
     def show_rename_dialog(self):
@@ -79,11 +87,25 @@ class MainWindow(QMainWindow):
         dialog.custom_signal.connect(self.rename_folders_excel)
         dialog.exec_()
 
+    def show_file_dialog(self):
+        folder_path = QFileDialog.getExistingDirectory(self, "Select Directory")
+        if folder_path:
+            self.load_files(folder_path)
+        self.selectDialog.hide()
+
     def show_folder_dialog(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Directory")
         if folder_path:
             self.load_folder_contents(folder_path)
-            self.load_files(folder_path)
+        self.selectDialog.hide()
+
+    def show_type_dialog(self):
+        if self.selectDialog.folder_signal:
+            self.selectDialog.folder_signal.connect(self.show_folder_dialog)
+
+        if self.selectDialog.file_signal:
+            self.selectDialog.file_signal.connect(self.show_file_dialog)
+        self.selectDialog.exec_()
 
 
     def load_folder_contents(self, folder_path):
@@ -92,12 +114,18 @@ class MainWindow(QMainWindow):
 
         # Set up table headers
         self.model.setHorizontalHeaderLabels(["Path", "Name", "New Name"])
-        
+
         # Set header width to 33% for each column
         header = self.table_view.horizontalHeader()
-        header.setSectionResizeMode(0, QHeaderView.Stretch)  # Path column takes the remaining space
-        header.setSectionResizeMode(1, QHeaderView.ResizeToContents)  # Name column adjusts to content
-        header.setSectionResizeMode(2, QHeaderView.ResizeToContents)  # New Name column adjusts to content
+        header.setSectionResizeMode(
+            0, QHeaderView.Stretch
+        )  # Path column takes the remaining space
+        header.setSectionResizeMode(
+            1, QHeaderView.ResizeToContents
+        )  # Name column adjusts to content
+        header.setSectionResizeMode(
+            2, QHeaderView.ResizeToContents
+        )  # New Name column adjusts to content
         # Recursively iterate through the folder contents
         self.add_folders_to_model(folder_path)
 
@@ -108,7 +136,7 @@ class MainWindow(QMainWindow):
                 item_path = os.path.normpath(os.path.join(root, name))
                 item.setData(item_path, Qt.UserRole + 1)  # Save path in UserRole+1
                 self.model.appendRow([QStandardItem(item_path), item])
-                
+
     def load_files(self, folder_path):
         self.model.clear()
         # Set up table headers
@@ -116,15 +144,23 @@ class MainWindow(QMainWindow):
 
         # Set header width to 50% for each column
         header = self.table_view.horizontalHeader()
-        header.setSectionResizeMode(0, QHeaderView.Stretch)  # File Name column takes the remaining space
-        header.setSectionResizeMode(1, QHeaderView.ResizeToContents)  # File Path column takes the remaining space
-        header.setSectionResizeMode(2, QHeaderView.ResizeToContents)  # New Name column adjusts to content
+        header.setSectionResizeMode(
+            0, QHeaderView.Stretch
+        )  # File Name column takes the remaining space
+        header.setSectionResizeMode(
+            1, QHeaderView.ResizeToContents
+        )  # File Path column takes the remaining space
+        header.setSectionResizeMode(
+            2, QHeaderView.ResizeToContents
+        )  # New Name column adjusts to content
 
         # Create and start the thread
         self.load_files_thread = LoadFilesThread(folder_path)
         self.load_files_thread.model = self.model
         self.loading.show()
-        self.load_files_thread.progress_updated.connect(self.loading.loadingBar.setValue)
+        self.load_files_thread.progress_updated.connect(
+            self.loading.loadingBar.setValue
+        )
         self.load_files_thread.loading_completed.connect(self.loading_completed)
         self.load_files_thread.start()
 
@@ -135,19 +171,21 @@ class MainWindow(QMainWindow):
         self.loading.loadingBar.setValue(0)
         self.loading.hide()
 
-    def rename_folders(self,new_name):
+    def rename_folders(self, new_name):
         items = self.get_sorted_items_by_depth()
-        
+
         index = 1  # Initialize an index to make the new name unique
-        
+
         for item in items:
             old_path = item.data(Qt.UserRole + 1)
             new_path = os.path.join(os.path.dirname(old_path), f"{new_name}_{index}")
-            
+
             # Check if the new path already exists, and increment the index if needed
             while os.path.exists(new_path):
                 index += 1
-                new_path = os.path.join(os.path.dirname(old_path), f"{new_name}_{index}")
+                new_path = os.path.join(
+                    os.path.dirname(old_path), f"{new_name}_{index}"
+                )
 
             os.rename(old_path, new_path)
             item.setData(new_path, Qt.UserRole + 1)
@@ -156,7 +194,10 @@ class MainWindow(QMainWindow):
     def rename_folders_excel(self):
         error_log = []  # Create an empty list to store errors
 
-        if all(self.model.item(row, 2) is None or self.model.item(row, 2).text() == "" for row in range(self.model.rowCount())):
+        if all(
+            self.model.item(row, 2) is None or self.model.item(row, 2).text() == ""
+            for row in range(self.model.rowCount())
+        ):
             # Show a warning if no values in the "New Name" column
             QMessageBox.warning(self, "Warning", "No 'New Name' values provided.")
             return
@@ -181,7 +222,12 @@ class MainWindow(QMainWindow):
                     # Check if the new path already exists
                     new_path = os.path.join(os.path.dirname(old_path), new_name)
                     if os.path.exists(new_path):
-                        error_log.append({"path": old_path, "error": f"Skipping rename for path '{old_path}' as '{new_name}' already exists"})
+                        error_log.append(
+                            {
+                                "path": old_path,
+                                "error": f"Skipping rename for path '{old_path}' as '{new_name}' already exists",
+                            }
+                        )
                     else:
                         try:
                             # Rename the folder
@@ -191,16 +237,29 @@ class MainWindow(QMainWindow):
                             path_item.setData(new_path, Qt.UserRole + 1)
                             path_item.setText(new_name)
                         except FileExistsError:
-                            error_log.append({"path": old_path, "error": f"Error renaming '{old_path}' to '{new_path}': File already exists"})
+                            error_log.append(
+                                {
+                                    "path": old_path,
+                                    "error": f"Error renaming '{old_path}' to '{new_path}': File already exists",
+                                }
+                            )
                 else:
-                    error_log.append({"path": old_path, "error": f"Folder does not exist: {old_path}."})
+                    error_log.append(
+                        {
+                            "path": old_path,
+                            "error": f"Folder does not exist: {old_path}.",
+                        }
+                    )
             else:
-                error_log.append({"path": old_path, "error": f"Skipping rename for path '{old_path}' as 'New Name' is not provided"})
+                error_log.append(
+                    {
+                        "path": old_path,
+                        "error": f"Skipping rename for path '{old_path}' as 'New Name' is not provided",
+                    }
+                )
 
         # Export error log to Excel
         self.export_error_log_to_excel(error_log)
-
-
 
     def export_error_log_to_excel(self, error_log):
         if not error_log:
@@ -235,9 +294,11 @@ class MainWindow(QMainWindow):
             items.append(item)
         items.sort(key=lambda x: x.data(Qt.UserRole + 1).count(os.sep), reverse=True)
         return items
-    
+
     def export_to_xlsx(self):
-        file_path, _ = QFileDialog.getSaveFileName(self, "Save Excel File", "", "Excel Files (*.xlsx)")
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "Save Excel File", "", "Excel Files (*.xlsx)"
+        )
 
         if file_path:
             # Create a new Excel workbook and select the active sheet
@@ -246,7 +307,7 @@ class MainWindow(QMainWindow):
 
             # Write headers to the Excel file
             headers = ["Path", "Name", "New Name"]
-            
+
             for col_num, header in enumerate(headers, 1):
                 sheet.cell(row=1, column=col_num, value=header)
 
@@ -254,10 +315,10 @@ class MainWindow(QMainWindow):
             for row in range(self.model.rowCount()):
                 name_item = self.model.item(row, 0)
                 path_item = self.model.item(row, 1)
-                
+
                 name_value = name_item.text()
                 path_value = path_item.text()
-                new_value  = ""
+                new_value = ""
 
                 sheet.append([name_value, path_value, new_value])
 
@@ -265,7 +326,9 @@ class MainWindow(QMainWindow):
             workbook.save(file_path)
 
     def import_xlsx(self):
-        file_path, _ = QFileDialog.getOpenFileName(self, "Open Excel File", "", "Excel Files (*.xlsx)")
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, "Open Excel File", "", "Excel Files (*.xlsx)"
+        )
         if file_path:
             workbook = openpyxl.load_workbook(file_path)
             sheet = workbook.active
@@ -282,21 +345,29 @@ class MainWindow(QMainWindow):
 
                 # Set the data for the new item
                 path_item = QStandardItem(str(row[0]))
-                path_item.setData(str(row[0]), Qt.UserRole + 1)  # Set the path in UserRole+1
+                path_item.setData(
+                    str(row[0]), Qt.UserRole + 1
+                )  # Set the path in UserRole+1
                 items.append(path_item)
                 name_item = QStandardItem(str(row[1]))
                 row_items = [
                     QStandardItem(str(row[0])),  # "Path" column
                     name_item,  # "Name" column
-                    QStandardItem(str(new_name_value))  # "New Name" column
+                    QStandardItem(str(new_name_value)),  # "New Name" column
                 ]
                 self.model.appendRow(row_items)
 
             # Set header width to 33% for each column
             header = self.table_view.horizontalHeader()
-            header.setSectionResizeMode(0, QHeaderView.Stretch)  # Path column takes the remaining space
-            header.setSectionResizeMode(1, QHeaderView.ResizeToContents)  # Name column adjusts to content
-            header.setSectionResizeMode(2, QHeaderView.ResizeToContents)  # New Name column adjusts to content
+            header.setSectionResizeMode(
+                0, QHeaderView.Stretch
+            )  # Path column takes the remaining space
+            header.setSectionResizeMode(
+                1, QHeaderView.ResizeToContents
+            )  # Name column adjusts to content
+            header.setSectionResizeMode(
+                2, QHeaderView.ResizeToContents
+            )  # New Name column adjusts to content
             # No sorting here
 
             workbook.close()
