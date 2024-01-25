@@ -76,7 +76,8 @@ class MainWindow(QMainWindow):
         self.model = QStandardItemModel()
         self.table_view.setModel(self.model)
         self.username.setText(logged_username)
-
+        self.folder_signal_connected = False
+        self.file_signal_connected = False
     def show_rename_dialog(self):
         if self.model.rowCount() == 0:
             # Show a warning message
@@ -100,12 +101,27 @@ class MainWindow(QMainWindow):
         self.selectDialog.hide()
 
     def show_type_dialog(self):
-        if self.selectDialog.folder_signal:
-            self.selectDialog.folder_signal.connect(self.show_folder_dialog)
+        # Disconnect signals if they are connected
+        if self.folder_signal_connected:
+            self.selectDialog.folder_signal.disconnect(self.show_folder_dialog)
+            self.folder_signal_connected = False
 
-        if self.selectDialog.file_signal:
+        if self.file_signal_connected:
+            self.selectDialog.file_signal.disconnect(self.show_file_dialog)
+            self.file_signal_connected = False
+
+        # Connect signals to slots if they are not connected
+        if not self.folder_signal_connected:
+            self.selectDialog.folder_signal.connect(self.show_folder_dialog)
+            self.folder_signal_connected = True
+
+        if not self.file_signal_connected:
             self.selectDialog.file_signal.connect(self.show_file_dialog)
+            self.file_signal_connected = True
+
+        # Show the dialog
         self.selectDialog.exec_()
+
 
 
     def load_folder_contents(self, folder_path):
