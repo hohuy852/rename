@@ -15,7 +15,6 @@ from Dialog.Progress.LoadingScreen import LoadingScreen
 from Dialog.Select.SelectWindow import TypeDialog
 from pathlib import Path
 
-
 class LoadFilesThread(QThread):
     progress_updated = pyqtSignal(int)  # Signal to update the progress bar
     loading_completed = pyqtSignal()
@@ -78,17 +77,32 @@ class MainWindow(QMainWindow):
         self.username.setText(logged_username)
         self.folder_signal_connected = False
         self.file_signal_connected = False
-
+        # Status
     def show_rename_dialog(self):
         if self.model.rowCount() == 0:
             # Show a warning message
             QMessageBox.warning(self, "Warning", "No data in the table to rename.")
             return
         dialog = RenameDialog(self)
-        dialog.confirm_signal.connect(self.rename_folders)
+        dialog.confirm_signal.connect(self.rename_confirmation)
         dialog.custom_signal.connect(self.rename_folders_excel)
         dialog.exec_()
 
+    def rename_confirmation(self):
+        if self.is_file_path():
+            # self.rename_files()
+            print("file")
+        else:
+            # self.rename_folders()
+            print("folder")
+
+    def is_file_path(self):
+        item = self.model.item(0, 0)
+        item_path = item.data(Qt.UserRole + 1)  # Assuming UserRole + 1 is used to store the path
+        if item_path is not None:
+            return os.path.isfile(item_path)
+    
+    
     def show_file_dialog(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Directory")
         if folder_path:
@@ -201,6 +215,25 @@ class MainWindow(QMainWindow):
 
         index = 1  # Initialize an index to make the new name unique
 
+        for item in items:
+            old_path = item.data(Qt.UserRole + 1)
+            new_path = os.path.join(os.path.dirname(old_path), f"{new_name}_{index}")
+
+            # Check if the new path already exists, and increment the index if needed
+            while os.path.exists(new_path):
+                index += 1
+                new_path = os.path.join(
+                    os.path.dirname(old_path), f"{new_name}_{index}"
+                )
+
+            os.rename(old_path, new_path)
+            item.setData(new_path, Qt.UserRole + 1)
+            item.setText(f"{new_name}_{index}")
+
+    def rename_files(self, new_name):
+        items = self.get_sorted_items_by_depth()
+
+        index = 1  # Initialize an index to make the new name unique
         for item in items:
             old_path = item.data(Qt.UserRole + 1)
             new_path = os.path.join(os.path.dirname(old_path), f"{new_name}_{index}")
