@@ -78,6 +78,7 @@ class MainWindow(QMainWindow):
         self.username.setText(logged_username)
         self.folder_signal_connected = False
         self.file_signal_connected = False
+
     def show_rename_dialog(self):
         if self.model.rowCount() == 0:
             # Show a warning message
@@ -122,8 +123,6 @@ class MainWindow(QMainWindow):
         # Show the dialog
         self.selectDialog.exec_()
 
-
-
     def load_folder_contents(self, folder_path):
         # Clear existing items from the model
         self.model.clear()
@@ -152,6 +151,16 @@ class MainWindow(QMainWindow):
                 item_path = os.path.normpath(os.path.join(root, name))
                 item.setData(item_path, Qt.UserRole + 1)  # Save path in UserRole+1
                 self.model.appendRow([QStandardItem(item_path), item])
+
+    def print_table_data(self):
+        for row in range(self.model.rowCount()):
+            for col in range(self.model.columnCount()):
+                item = self.model.item(row, col)
+                if item is not None:
+                    item_data = item.data()
+                    print(f"Row {row}, Column {col}: {item_data}")
+                else:
+                    print(f"Row {row}, Column {col}: None")
 
     def load_files(self, folder_path):
         self.model.clear()
@@ -223,14 +232,14 @@ class MainWindow(QMainWindow):
 
         for item in items:
             row = self.model.findItems(item.text(), Qt.MatchExactly, 1)[0].row()
-            name_item = self.model.item(row, 0)
-            path_item = self.model.item(row, 1)
+            name_item = self.model.item(row, 1)
+            path_item = self.model.item(row, 0)
             new_name_item = self.model.item(row, 2)
 
-            old_path = path_item.data(Qt.UserRole + 1)
+            old_path = path_item.data(Qt.UserRole + 1) if path_item and path_item.data(Qt.UserRole + 1) else None
 
             # Check if the "New Name" item exists and has a value
-            if new_name_item and new_name_item.text() != "":
+            if new_name_item and new_name_item.text() != "" and old_path:
                 new_name = new_name_item.text()
 
                 # Check if the old path exists
@@ -251,7 +260,7 @@ class MainWindow(QMainWindow):
 
                             # Update the model data
                             path_item.setData(new_path, Qt.UserRole + 1)
-                            path_item.setText(new_name)
+                            name_item.setText(new_name)
                         except FileExistsError:
                             error_log.append(
                                 {
@@ -276,6 +285,7 @@ class MainWindow(QMainWindow):
 
         # Export error log to Excel
         self.export_error_log_to_excel(error_log)
+
 
     def export_error_log_to_excel(self, error_log):
         if not error_log:
@@ -308,7 +318,17 @@ class MainWindow(QMainWindow):
         for row in range(self.model.rowCount()):
             item = self.model.item(row, 1)
             items.append(item)
-        items.sort(key=lambda x: x.data(Qt.UserRole + 1).count(os.sep), reverse=True)
+
+        # Modify the sorting key function to handle None values
+        items.sort(
+            key=lambda x: (
+                x.data(Qt.UserRole + 1).count(os.sep)
+                if x and x.data(Qt.UserRole + 1)
+                else 0
+            ),
+            reverse=True,
+        )
+
         return items
 
     def export_to_xlsx(self):
@@ -353,37 +373,36 @@ class MainWindow(QMainWindow):
 
             self.model.clear()
 
-            self.model.setHorizontalHeaderLabels(headers)
+            if headers:
+                self.model.setHorizontalHeaderLabels(headers)
 
-            items = []
-            for row in sheet.iter_rows(min_row=2, values_only=True):
-                new_name_value = row[2] if row[2] is not None else ""
+                for row in sheet.iter_rows(min_row=2, values_only=True):
+                    new_name_value = row[2] if row[2] is not None else ""
 
-                # Set the data for the new item
-                path_item = QStandardItem(str(row[0]))
-                path_item.setData(
-                    str(row[0]), Qt.UserRole + 1
-                )  # Set the path in UserRole+1
-                items.append(path_item)
-                name_item = QStandardItem(str(row[1]))
-                row_items = [
-                    QStandardItem(str(row[0])),  # "Path" column
-                    name_item,  # "Name" column
-                    QStandardItem(str(new_name_value)),  # "New Name" column
-                ]
-                self.model.appendRow(row_items)
+                    # Set the data for the new item
+                    path_item = QStandardItem(str(row[0]))
+                    path_item.setData(
+                        str(row[0]), Qt.UserRole + 1
+                    )  # Set the path in UserRole+1
 
-            # Set header width to 33% for each column
-            header = self.table_view.horizontalHeader()
-            header.setSectionResizeMode(
-                0, QHeaderView.Stretch
-            )  # Path column takes the remaining space
-            header.setSectionResizeMode(
-                1, QHeaderView.ResizeToContents
-            )  # Name column adjusts to content
-            header.setSectionResizeMode(
-                2, QHeaderView.ResizeToContents
-            )  # New Name column adjusts to content
-            # No sorting here
+                    name_item = QStandardItem(str(row[1]))
+                    row_items = [
+                        path_item,  # "Path" column
+                        name_item,  # "Name" column
+                        QStandardItem(str(new_name_value)),  # "New Name" column
+                    ]
+                    self.model.appendRow(row_items)
 
-            workbook.close()
+                # Set header width to 33% for each column
+                header = self.table_view.horizontalHeader()
+                header.setSectionResizeMode(
+                    0, QHeaderView.Stretch
+                )  # Path column takes the remaining space
+                header.setSectionResizeMode(
+                    1, QHeaderView.ResizeToContents
+                )  # Name column adjusts to content
+                header.setSectionResizeMode(
+                    2, QHeaderView.ResizeToContents
+                )  # New Name column adjusts to content
+
+                workbook.close()
