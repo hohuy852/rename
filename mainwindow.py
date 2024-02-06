@@ -30,10 +30,13 @@ class LoadFilesThread(QThread):
 
         for root, dirs, files in os.walk(self.folder_path):
             for file_name in files:
-                file_path = os.path.join(root, file_name)
+                file_path = os.path.normpath(os.path.join(root, file_name))
+
+                # Extract file name and extension
+                file_name, file_extension = os.path.splitext(file_name)
 
                 # Create QStandardItems for file name and file path
-                file_name_item = QStandardItem(file_name)
+                file_name_item = QStandardItem(file_name + file_extension)
                 file_path_item = QStandardItem(file_path)
 
                 # Set data for file path in UserRole + 1
@@ -48,7 +51,6 @@ class LoadFilesThread(QThread):
                 self.progress_updated.emit(int(percent))
 
         self.loading_completed.emit()
-
 
 class MainWindow(QMainWindow):
     def __init__(self, logged_username):
@@ -241,25 +243,34 @@ class MainWindow(QMainWindow):
             name = os.path.basename(item.data(Qt.UserRole + 1))
             path_item.setText(item.data(Qt.UserRole + 1))
             name_item.setText(name)
-
-
+    
     def rename_files(self, new_name):
-        items = self.get_sorted_items_by_depth()
-
+        items = self.get_sorted_items_by_depth()  # Assuming this function returns a list of items
         index = 1  # Initialize an index to make the new name unique
-        for item in items:
+        for row, item in enumerate(items):  # Assuming you iterate over rows somehow
             old_path = item.data(Qt.UserRole + 1)
-            new_path = os.path.join(os.path.dirname(old_path), f"{new_name}_{index}")
+            if os.path.isfile(old_path):  # Check if it's a file
+                file_name, file_ext = os.path.splitext(os.path.basename(old_path))
+                new_path = os.path.join(os.path.dirname(old_path), f"{new_name}_{index}{file_ext}")
+                # Check if the new path already exists, and increment the index if needed
+                while os.path.exists(new_path):
+                    index += 1
+                    new_path = os.path.join(
+                        os.path.dirname(old_path), f"{new_name}_{index}{file_ext}"
+                    )
+                os.rename(old_path, new_path)
+                item.setData(new_path, Qt.UserRole + 1)
+                index += 1  # Increment index for the next file
 
-            # Check if the new path already exists, and increment the index if needed
-            while os.path.exists(new_path):
-                index += 1
-                new_path = os.path.join(
-                    os.path.dirname(old_path), f"{new_name}_{index}"
-                )
-                item.setText(f"{new_name}_{index}")
-            os.rename(old_path, new_path)
-            item.setData(new_path, Qt.UserRole + 1)
+        # Reverse the list before setting the text for items
+        items.reverse()
+        for row, item in enumerate(items):  # Assuming you iterate over rows somehow
+            path_item = self.model.item(row, 0)  # Assuming third column is at index 2
+            name_item = self.model.item(row, 1)  # Assuming third column is at index 2
+            name = os.path.basename(item.data(Qt.UserRole + 1))
+            path_item.setText(item.data(Qt.UserRole + 1))
+            name_item.setText(name)
+
 
     def rename_folders_excel(self):
         error_log = []  # Create an empty list to store errors
