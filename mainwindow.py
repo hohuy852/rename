@@ -30,10 +30,13 @@ class LoadFilesThread(QThread):
 
         for root, dirs, files in os.walk(self.folder_path):
             for file_name in files:
-                file_path = os.path.join(root, file_name)
+                file_path = os.path.normpath(os.path.join(root, file_name))
+
+                # Extract file name and extension
+                file_name, file_extension = os.path.splitext(file_name)
 
                 # Create QStandardItems for file name and file path
-                file_name_item = QStandardItem(file_name)
+                file_name_item = QStandardItem(file_name + file_extension)
                 file_path_item = QStandardItem(file_path)
 
                 # Set data for file path in UserRole + 1
@@ -48,7 +51,6 @@ class LoadFilesThread(QThread):
                 self.progress_updated.emit(int(percent))
 
         self.loading_completed.emit()
-
 
 class MainWindow(QMainWindow):
     def __init__(self, logged_username):
@@ -78,6 +80,7 @@ class MainWindow(QMainWindow):
         self.username.setText(logged_username)
         self.folder_signal_connected = False
         self.file_signal_connected = False
+        # Status
 
     def show_rename_dialog(self):
         if self.model.rowCount() == 0:
@@ -85,9 +88,23 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "Warning", "No data in the table to rename.")
             return
         dialog = RenameDialog(self)
-        dialog.confirm_signal.connect(self.rename_folders)
+        dialog.confirm_signal.connect(self.rename_confirmation)
         dialog.custom_signal.connect(self.rename_folders_excel)
         dialog.exec_()
+
+    def rename_confirmation(self, new_name):
+        if self.is_file_path():
+            self.rename_files(new_name)
+        else:
+            self.rename_folders(new_name)
+
+    def is_file_path(self):
+        item = self.model.item(0, 0)
+        item_path = item.data(
+            Qt.UserRole + 1
+        )  # Assuming UserRole + 1 is used to store the path
+        if item_path is not None:
+            return os.path.isfile(item_path)
 
     def show_file_dialog(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Directory")
@@ -147,10 +164,17 @@ class MainWindow(QMainWindow):
     def add_folders_to_model(self, folder_path):
         for root, dirs, files in os.walk(folder_path):
             for name in dirs:
-                item = QStandardItem(name)
                 item_path = os.path.normpath(os.path.join(root, name))
-                item.setData(item_path, Qt.UserRole + 1)  # Save path in UserRole+1
-                self.model.appendRow([QStandardItem(item_path), item])
+
+                # Create QStandardItems for file path and file name
+                folder_path_item = QStandardItem(item_path)
+                folder_name_item = QStandardItem(name)
+
+                # Set data for file path in UserRole + 1
+                folder_path_item.setData(item_path, Qt.UserRole + 1)
+
+                # Append the items to the model
+                self.model.appendRow([folder_path_item, folder_name_item])
 
     def print_table_data(self):
         for row in range(self.model.rowCount()):
@@ -198,23 +222,55 @@ class MainWindow(QMainWindow):
 
     def rename_folders(self, new_name):
         items = self.get_sorted_items_by_depth()
-
         index = 1  # Initialize an index to make the new name unique
-
-        for item in items:
+        for row, item in enumerate(items):  # Assuming you iterate over rows somehow
             old_path = item.data(Qt.UserRole + 1)
             new_path = os.path.join(os.path.dirname(old_path), f"{new_name}_{index}")
-
             # Check if the new path already exists, and increment the index if needed
             while os.path.exists(new_path):
                 index += 1
                 new_path = os.path.join(
                     os.path.dirname(old_path), f"{new_name}_{index}"
                 )
-
             os.rename(old_path, new_path)
             item.setData(new_path, Qt.UserRole + 1)
-            item.setText(f"{new_name}_{index}")
+
+        # Reverse the list before setting the text for items
+        items.reverse()
+        for row, item in enumerate(items):  # Assuming you iterate over rows somehow
+            path_item = self.model.item(row, 0)  # Assuming third column is at index 2
+            name_item = self.model.item(row, 1)  # Assuming third column is at index 2
+            name = os.path.basename(item.data(Qt.UserRole + 1))
+            path_item.setText(item.data(Qt.UserRole + 1))
+            name_item.setText(name)
+    
+    def rename_files(self, new_name):
+        items = self.get_sorted_items_by_depth()  # Assuming this function returns a list of items
+        index = 1  # Initialize an index to make the new name unique
+        for row, item in enumerate(items):  # Assuming you iterate over rows somehow
+            old_path = item.data(Qt.UserRole + 1)
+            if os.path.isfile(old_path):  # Check if it's a file
+                file_name, file_ext = os.path.splitext(os.path.basename(old_path))
+                new_path = os.path.join(os.path.dirname(old_path), f"{new_name}_{index}{file_ext}")
+                # Check if the new path already exists, and increment the index if needed
+                while os.path.exists(new_path):
+                    index += 1
+                    new_path = os.path.join(
+                        os.path.dirname(old_path), f"{new_name}_{index}{file_ext}"
+                    )
+                os.rename(old_path, new_path)
+                item.setData(new_path, Qt.UserRole + 1)
+                index += 1  # Increment index for the next file
+
+        # Reverse the list before setting the text for items
+        items.reverse()
+        for row, item in enumerate(items):  # Assuming you iterate over rows somehow
+            path_item = self.model.item(row, 0)  # Assuming third column is at index 2
+            name_item = self.model.item(row, 1)  # Assuming third column is at index 2
+            name = os.path.basename(item.data(Qt.UserRole + 1))
+            path_item.setText(item.data(Qt.UserRole + 1))
+            name_item.setText(name)
+
 
     def rename_folders_excel(self):
         error_log = []  # Create an empty list to store errors
@@ -230,13 +286,16 @@ class MainWindow(QMainWindow):
         # Sort items by depth in descending order
         items = self.get_sorted_items_by_depth()
 
-        for item in items:
-            row = self.model.findItems(item.text(), Qt.MatchExactly, 1)[0].row()
-            name_item = self.model.item(row, 1)
+        for row in range(len(items)):
             path_item = self.model.item(row, 0)
+            name_item = self.model.item(row, 1)
             new_name_item = self.model.item(row, 2)
 
-            old_path = path_item.data(Qt.UserRole + 1) if path_item and path_item.data(Qt.UserRole + 1) else None
+            old_path = (
+                path_item.data(Qt.UserRole + 1)
+                if path_item and path_item.data(Qt.UserRole + 1)
+                else None
+            )
 
             # Check if the "New Name" item exists and has a value
             if new_name_item and new_name_item.text() != "" and old_path:
@@ -260,6 +319,7 @@ class MainWindow(QMainWindow):
 
                             # Update the model data
                             path_item.setData(new_path, Qt.UserRole + 1)
+                            path_item.setText(new_path)
                             name_item.setText(new_name)
                         except FileExistsError:
                             error_log.append(
@@ -286,7 +346,90 @@ class MainWindow(QMainWindow):
         # Export error log to Excel
         self.export_error_log_to_excel(error_log)
 
+    def rename_files_excel(self):
+        error_log = []  # Create an empty list to store errors
 
+        if all(
+            self.model.item(row, 2) is None or self.model.item(row, 2).text() == ""
+            for row in range(self.model.rowCount())
+        ):
+            # Show a warning if no values in the "New Name" column
+            QMessageBox.warning(self, "Warning", "No 'New Name' values provided.")
+            return
+
+        # Sort items by depth in descending order
+        items = self.get_sorted_items_by_depth()
+
+        for row in range(len(items)):
+            path_item = self.model.item(row, 0)
+            name_item = self.model.item(row, 1)
+            new_name_item = self.model.item(row, 2)
+
+            old_path = (
+                path_item.data(Qt.UserRole + 1)
+                if path_item and path_item.data(Qt.UserRole + 1)
+                else None
+            )
+
+            # Check if the "New Name" item exists and has a value
+            if new_name_item and new_name_item.text() != "" and old_path:
+                new_name = new_name_item.text()
+
+                # Check if the old path exists
+                if os.path.exists(old_path):
+                    # Preserve the file extension
+                    old_name, old_extension = os.path.splitext(os.path.basename(old_path))
+                    new_name, new_extension = os.path.splitext(new_name)
+
+                    # If the new name does not have an extension, preserve the old extension
+                    if not new_extension:
+                        new_extension = old_extension
+
+                    # Form the new path with preserved extension
+                    new_path = os.path.join(os.path.dirname(old_path), new_name + new_extension)
+
+                    # Check if the new path already exists
+                    if os.path.exists(new_path):
+                        error_log.append(
+                            {
+                                "path": old_path,
+                                "error": f"Skipping rename for path '{old_path}' as '{new_name}' already exists",
+                            }
+                        )
+                    else:
+                        try:
+                            # Rename the file
+                            os.rename(old_path, new_path)
+
+                            # Update the model data
+                            path_item.setData(new_path, Qt.UserRole + 1)
+                            path_item.setText(new_path)
+                            name_item.setText(new_name + new_extension)
+                        except FileExistsError:
+                            error_log.append(
+                                {
+                                    "path": old_path,
+                                    "error": f"Error renaming '{old_path}' to '{new_path}': File already exists",
+                                }
+                            )
+                else:
+                    error_log.append(
+                        {
+                            "path": old_path,
+                            "error": f"File does not exist: {old_path}.",
+                        }
+                    )
+            else:
+                error_log.append(
+                    {
+                        "path": old_path,
+                        "error": f"Skipping rename for path '{old_path}' as 'New Name' is not provided",
+                    }
+                )
+
+        # Export error log to Excel
+        self.export_error_log_to_excel(error_log)
+        
     def export_error_log_to_excel(self, error_log):
         if not error_log:
             print("No errors to export.")
@@ -316,7 +459,7 @@ class MainWindow(QMainWindow):
     def get_sorted_items_by_depth(self):
         items = []
         for row in range(self.model.rowCount()):
-            item = self.model.item(row, 1)
+            item = self.model.item(row, 0)
             items.append(item)
 
         # Modify the sorting key function to handle None values
