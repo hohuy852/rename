@@ -216,11 +216,11 @@ class MainWindow(QMainWindow):
         self.loading.loadingBar.setValue(0)
         self.loading.hide()
 
+
     def rename_folders(self, new_name):
         items = self.get_sorted_items_by_depth()
         index = 1  # Initialize an index to make the new name unique
-
-        for item in items:
+        for row, item in enumerate(items):  # Assuming you iterate over rows somehow
             old_path = item.data(Qt.UserRole + 1)
             new_path = os.path.join(os.path.dirname(old_path), f"{new_name}_{index}")
 
@@ -232,12 +232,15 @@ class MainWindow(QMainWindow):
                 )
 
             os.rename(old_path, new_path)
+            item.setData(new_path, Qt.UserRole + 1)
+            name_item = self.model.item(row, 1)
+            name_item.setText(f"{new_name}_{index}")
 
 
 
     def rename_files(self, new_name):
         items = self.get_sorted_items_by_depth()
-
+       
         index = 1  # Initialize an index to make the new name unique
         for item in items:
             old_path = item.data(Qt.UserRole + 1)
