@@ -157,12 +157,19 @@ class MainWindow(QMainWindow):
         self.add_folders_to_model(folder_path)
 
     def add_folders_to_model(self, folder_path):
-        for root, dirs, files in os.walk(folder_path):
-            for name in dirs:
-                item = QStandardItem(name)
-                item_path = os.path.normpath(os.path.join(root, name))
-                item.setData(item_path, Qt.UserRole + 1)  # Save path in UserRole+1
-                self.model.appendRow([QStandardItem(item_path), item])
+            for root, dirs, files in os.walk(folder_path):
+                for name in dirs:
+                    item_path = os.path.normpath(os.path.join(root, name))
+                    
+                    # Create QStandardItems for file path and file name
+                    folder_path_item = QStandardItem(item_path)
+                    folder_name_item = QStandardItem(name)
+                    
+                    # Set data for file path in UserRole + 1
+                    folder_path_item.setData(item_path, Qt.UserRole + 1)
+                    
+                    # Append the items to the model
+                    self.model.appendRow([folder_path_item, folder_name_item])
 
     def print_table_data(self):
         for row in range(self.model.rowCount()):
@@ -210,7 +217,6 @@ class MainWindow(QMainWindow):
 
     def rename_folders(self, new_name):
         items = self.get_sorted_items_by_depth()
-
         index = 1  # Initialize an index to make the new name unique
 
         for item in items:
@@ -227,14 +233,9 @@ class MainWindow(QMainWindow):
             os.rename(old_path, new_path)
 
             # Update item text in the third column
-            third_column_item = item.child(2)
-            if not third_column_item:
-                third_column_item = QStandardItem()
-                item.setChild(2, third_column_item)
-            third_column_item.setText(f"{new_name}_{index}")
-
-            # Increment index for the next iteration
-            index += 1
+            row = self.model.findItems(item.text(), Qt.MatchExactly, 1)[0].row()
+            path_name = self.model.item(row, 1)
+            path_name.setText(f"{new_name}_{index}")
 
 
     def rename_files(self, new_name):
@@ -272,8 +273,8 @@ class MainWindow(QMainWindow):
 
         for item in items:
             row = self.model.findItems(item.text(), Qt.MatchExactly, 1)[0].row()
-            name_item = self.model.item(row, 1)
             path_item = self.model.item(row, 0)
+            name_item = self.model.item(row, 1)
             new_name_item = self.model.item(row, 2)
 
             old_path = path_item.data(Qt.UserRole + 1) if path_item and path_item.data(Qt.UserRole + 1) else None
@@ -356,7 +357,7 @@ class MainWindow(QMainWindow):
     def get_sorted_items_by_depth(self):
         items = []
         for row in range(self.model.rowCount()):
-            item = self.model.item(row, 1)
+            item = self.model.item(row, 0)
             items.append(item)
 
         # Modify the sorting key function to handle None values
