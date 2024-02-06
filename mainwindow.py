@@ -286,8 +286,7 @@ class MainWindow(QMainWindow):
         # Sort items by depth in descending order
         items = self.get_sorted_items_by_depth()
 
-        for item in items:
-            row = self.model.findItems(item.text(), Qt.MatchExactly, 1)[0].row()
+        for row in range(len(items)):
             path_item = self.model.item(row, 0)
             name_item = self.model.item(row, 1)
             new_name_item = self.model.item(row, 2)
@@ -320,6 +319,7 @@ class MainWindow(QMainWindow):
 
                             # Update the model data
                             path_item.setData(new_path, Qt.UserRole + 1)
+                            path_item.setText(new_path)
                             name_item.setText(new_name)
                         except FileExistsError:
                             error_log.append(
@@ -345,6 +345,8 @@ class MainWindow(QMainWindow):
 
         # Export error log to Excel
         self.export_error_log_to_excel(error_log)
+
+
 
     def export_error_log_to_excel(self, error_log):
         if not error_log:
