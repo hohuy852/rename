@@ -88,11 +88,11 @@ class MainWindow(QMainWindow):
         dialog.custom_signal.connect(self.rename_folders_excel)
         dialog.exec_()
 
-    def rename_confirmation(self):
+    def rename_confirmation(self, new_name):
         if self.is_file_path():
-            self.rename_files()
+            self.rename_files(new_name)
         else:
-            self.rename_folders()
+            self.rename_folders(new_name)
 
     def is_file_path(self):
         item = self.model.item(0, 0)
