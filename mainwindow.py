@@ -171,6 +171,7 @@ class MainWindow(QMainWindow):
                     # Append the items to the model
                     self.model.appendRow([folder_path_item, folder_name_item])
 
+
     def print_table_data(self):
         for row in range(self.model.rowCount()):
             for col in range(self.model.columnCount()):
@@ -232,10 +233,6 @@ class MainWindow(QMainWindow):
 
             os.rename(old_path, new_path)
 
-            # Update item text in the third column
-            row = self.model.findItems(item.text(), Qt.MatchExactly, 1)[0].row()
-            path_name = self.model.item(row, 1)
-            path_name.setText(f"{new_name}_{index}")
 
 
     def rename_files(self, new_name):
