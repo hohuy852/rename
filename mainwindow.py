@@ -90,11 +90,9 @@ class MainWindow(QMainWindow):
 
     def rename_confirmation(self):
         if self.is_file_path():
-            # self.rename_files()
-            print("file")
+            self.rename_files()
         else:
-            # self.rename_folders()
-            print("folder")
+            self.rename_folders()
 
     def is_file_path(self):
         item = self.model.item(0, 0)
@@ -227,8 +225,17 @@ class MainWindow(QMainWindow):
                 )
 
             os.rename(old_path, new_path)
-            item.setData(new_path, Qt.UserRole + 1)
-            item.setText(f"{new_name}_{index}")
+
+            # Update item text in the third column
+            third_column_item = item.child(2)
+            if not third_column_item:
+                third_column_item = QStandardItem()
+                item.setChild(2, third_column_item)
+            third_column_item.setText(f"{new_name}_{index}")
+
+            # Increment index for the next iteration
+            index += 1
+
 
     def rename_files(self, new_name):
         items = self.get_sorted_items_by_depth()
