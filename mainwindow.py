@@ -15,6 +15,7 @@ from Dialog.Progress.LoadingScreen import LoadingScreen
 from Dialog.Select.SelectWindow import TypeDialog
 from pathlib import Path
 
+
 class LoadFilesThread(QThread):
     progress_updated = pyqtSignal(int)  # Signal to update the progress bar
     loading_completed = pyqtSignal()
@@ -78,6 +79,7 @@ class MainWindow(QMainWindow):
         self.folder_signal_connected = False
         self.file_signal_connected = False
         # Status
+
     def show_rename_dialog(self):
         if self.model.rowCount() == 0:
             # Show a warning message
@@ -96,11 +98,12 @@ class MainWindow(QMainWindow):
 
     def is_file_path(self):
         item = self.model.item(0, 0)
-        item_path = item.data(Qt.UserRole + 1)  # Assuming UserRole + 1 is used to store the path
+        item_path = item.data(
+            Qt.UserRole + 1
+        )  # Assuming UserRole + 1 is used to store the path
         if item_path is not None:
             return os.path.isfile(item_path)
-    
-    
+
     def show_file_dialog(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Directory")
         if folder_path:
@@ -157,20 +160,19 @@ class MainWindow(QMainWindow):
         self.add_folders_to_model(folder_path)
 
     def add_folders_to_model(self, folder_path):
-            for root, dirs, files in os.walk(folder_path):
-                for name in dirs:
-                    item_path = os.path.normpath(os.path.join(root, name))
-                    
-                    # Create QStandardItems for file path and file name
-                    folder_path_item = QStandardItem(item_path)
-                    folder_name_item = QStandardItem(name)
-                    
-                    # Set data for file path in UserRole + 1
-                    folder_path_item.setData(item_path, Qt.UserRole + 1)
-                    
-                    # Append the items to the model
-                    self.model.appendRow([folder_path_item, folder_name_item])
+        for root, dirs, files in os.walk(folder_path):
+            for name in dirs:
+                item_path = os.path.normpath(os.path.join(root, name))
 
+                # Create QStandardItems for file path and file name
+                folder_path_item = QStandardItem(item_path)
+                folder_name_item = QStandardItem(name)
+
+                # Set data for file path in UserRole + 1
+                folder_path_item.setData(item_path, Qt.UserRole + 1)
+
+                # Append the items to the model
+                self.model.appendRow([folder_path_item, folder_name_item])
 
     def print_table_data(self):
         for row in range(self.model.rowCount()):
@@ -216,31 +218,34 @@ class MainWindow(QMainWindow):
         self.loading.loadingBar.setValue(0)
         self.loading.hide()
 
-
     def rename_folders(self, new_name):
         items = self.get_sorted_items_by_depth()
         index = 1  # Initialize an index to make the new name unique
         for row, item in enumerate(items):  # Assuming you iterate over rows somehow
             old_path = item.data(Qt.UserRole + 1)
             new_path = os.path.join(os.path.dirname(old_path), f"{new_name}_{index}")
-
             # Check if the new path already exists, and increment the index if needed
             while os.path.exists(new_path):
                 index += 1
                 new_path = os.path.join(
                     os.path.dirname(old_path), f"{new_name}_{index}"
                 )
-
             os.rename(old_path, new_path)
             item.setData(new_path, Qt.UserRole + 1)
-            name_item = self.model.item(row, 1)
-            name_item.setText(f"{new_name}_{index}")
 
+        # Reverse the list before setting the text for items
+        items.reverse()
+        for row, item in enumerate(items):  # Assuming you iterate over rows somehow
+            path_item = self.model.item(row, 0)  # Assuming third column is at index 2
+            name_item = self.model.item(row, 1)  # Assuming third column is at index 2
+            name = os.path.basename(item.data(Qt.UserRole + 1))
+            path_item.setText(item.data(Qt.UserRole + 1))
+            name_item.setText(name)
 
 
     def rename_files(self, new_name):
         items = self.get_sorted_items_by_depth()
-       
+
         index = 1  # Initialize an index to make the new name unique
         for item in items:
             old_path = item.data(Qt.UserRole + 1)
@@ -252,10 +257,9 @@ class MainWindow(QMainWindow):
                 new_path = os.path.join(
                     os.path.dirname(old_path), f"{new_name}_{index}"
                 )
-
+                item.setText(f"{new_name}_{index}")
             os.rename(old_path, new_path)
             item.setData(new_path, Qt.UserRole + 1)
-            item.setText(f"{new_name}_{index}")
 
     def rename_folders_excel(self):
         error_log = []  # Create an empty list to store errors
@@ -277,7 +281,11 @@ class MainWindow(QMainWindow):
             name_item = self.model.item(row, 1)
             new_name_item = self.model.item(row, 2)
 
-            old_path = path_item.data(Qt.UserRole + 1) if path_item and path_item.data(Qt.UserRole + 1) else None
+            old_path = (
+                path_item.data(Qt.UserRole + 1)
+                if path_item and path_item.data(Qt.UserRole + 1)
+                else None
+            )
 
             # Check if the "New Name" item exists and has a value
             if new_name_item and new_name_item.text() != "" and old_path:
@@ -326,7 +334,6 @@ class MainWindow(QMainWindow):
 
         # Export error log to Excel
         self.export_error_log_to_excel(error_log)
-
 
     def export_error_log_to_excel(self, error_log):
         if not error_log:
