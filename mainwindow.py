@@ -346,8 +346,90 @@ class MainWindow(QMainWindow):
         # Export error log to Excel
         self.export_error_log_to_excel(error_log)
 
+    def rename_files_excel(self):
+        error_log = []  # Create an empty list to store errors
 
+        if all(
+            self.model.item(row, 2) is None or self.model.item(row, 2).text() == ""
+            for row in range(self.model.rowCount())
+        ):
+            # Show a warning if no values in the "New Name" column
+            QMessageBox.warning(self, "Warning", "No 'New Name' values provided.")
+            return
 
+        # Sort items by depth in descending order
+        items = self.get_sorted_items_by_depth()
+
+        for row in range(len(items)):
+            path_item = self.model.item(row, 0)
+            name_item = self.model.item(row, 1)
+            new_name_item = self.model.item(row, 2)
+
+            old_path = (
+                path_item.data(Qt.UserRole + 1)
+                if path_item and path_item.data(Qt.UserRole + 1)
+                else None
+            )
+
+            # Check if the "New Name" item exists and has a value
+            if new_name_item and new_name_item.text() != "" and old_path:
+                new_name = new_name_item.text()
+
+                # Check if the old path exists
+                if os.path.exists(old_path):
+                    # Preserve the file extension
+                    old_name, old_extension = os.path.splitext(os.path.basename(old_path))
+                    new_name, new_extension = os.path.splitext(new_name)
+
+                    # If the new name does not have an extension, preserve the old extension
+                    if not new_extension:
+                        new_extension = old_extension
+
+                    # Form the new path with preserved extension
+                    new_path = os.path.join(os.path.dirname(old_path), new_name + new_extension)
+
+                    # Check if the new path already exists
+                    if os.path.exists(new_path):
+                        error_log.append(
+                            {
+                                "path": old_path,
+                                "error": f"Skipping rename for path '{old_path}' as '{new_name}' already exists",
+                            }
+                        )
+                    else:
+                        try:
+                            # Rename the file
+                            os.rename(old_path, new_path)
+
+                            # Update the model data
+                            path_item.setData(new_path, Qt.UserRole + 1)
+                            path_item.setText(new_path)
+                            name_item.setText(new_name + new_extension)
+                        except FileExistsError:
+                            error_log.append(
+                                {
+                                    "path": old_path,
+                                    "error": f"Error renaming '{old_path}' to '{new_path}': File already exists",
+                                }
+                            )
+                else:
+                    error_log.append(
+                        {
+                            "path": old_path,
+                            "error": f"File does not exist: {old_path}.",
+                        }
+                    )
+            else:
+                error_log.append(
+                    {
+                        "path": old_path,
+                        "error": f"Skipping rename for path '{old_path}' as 'New Name' is not provided",
+                    }
+                )
+
+        # Export error log to Excel
+        self.export_error_log_to_excel(error_log)
+        
     def export_error_log_to_excel(self, error_log):
         if not error_log:
             print("No errors to export.")
