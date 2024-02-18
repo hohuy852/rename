@@ -37,5 +37,5 @@ class Type_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.open_folder.setText(_translate("Dialog", "Open Folder"))
-        self.open_file.setText(_translate("Dialog", "Open File"))
+        self.open_folder.setText(_translate("Dialog", "Load Folder"))
+        self.open_file.setText(_translate("Dialog", "Load Files"))
