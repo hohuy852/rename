@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>test.png</file>
     <file>folder-menu.png</file>
     <file>logout.png</file>
     <file>support.png</file>

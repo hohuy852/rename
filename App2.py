@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './App-ver2.ui'
+# Form implementation generated from reading ui file 'App-ver2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -15,7 +15,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1200, 750)
-        MainWindow.setStyleSheet("background-color: rgb(244, 244, 244);")
+        MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -93,10 +93,11 @@ class Ui_MainWindow(object):
         self.name = QtWidgets.QLabel(self.frame)
         self.name.setMaximumSize(QtCore.QSize(16777215, 20))
         font = QtGui.QFont()
-        font.setFamily("Poppins ExtraBold")
-        font.setPointSize(11)
-        font.setBold(True)
+        font.setFamily("Poppins SemiBold")
+        font.setPointSize(10)
+        font.setItalic(False)
         self.name.setFont(font)
+        self.name.setStyleSheet("font: 600 10pt \"Poppins SemiBold\";")
         self.name.setWordWrap(False)
         self.name.setObjectName("name")
         self.verticalLayout_7.addWidget(self.name, 0, QtCore.Qt.AlignTop)
@@ -289,6 +290,19 @@ class Ui_MainWindow(object):
         self.import_btn.setFlat(True)
         self.import_btn.setObjectName("import_btn")
         self.horizontalLayout_2.addWidget(self.import_btn)
+        self.test_btn = QtWidgets.QPushButton(self.tools)
+        self.test_btn.setMinimumSize(QtCore.QSize(48, 48))
+        self.test_btn.setMaximumSize(QtCore.QSize(48, 48))
+        self.test_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.test_btn.setStyleSheet("")
+        self.test_btn.setText("")
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap("resource/test.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.test_btn.setIcon(icon8)
+        self.test_btn.setIconSize(QtCore.QSize(28, 28))
+        self.test_btn.setFlat(True)
+        self.test_btn.setObjectName("test_btn")
+        self.horizontalLayout_2.addWidget(self.test_btn)
         spacerItem1 = QtWidgets.QSpacerItem(704, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem1)
         self.verticalLayout_5.addWidget(self.tools)

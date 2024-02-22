@@ -12,6 +12,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from App2 import Ui_MainWindow
 from Dialog.Renaming.RenameWindow import RenameDialog
 from Dialog.Progress.LoadingScreen import LoadingScreen
+from Dialog.Test.TestWindow import TestDialog
 from Dialog.Select.SelectWindow import TypeDialog
 from pathlib import Path
 
@@ -68,8 +69,10 @@ class MainWindow(QMainWindow):
         self.table_view = self.ui.tableView
         self.username = self.ui.name
         self.rename_btn = self.ui.rename_btn
+        self.test_btn = self.ui.test_btn
         # Connect signals and slots
         self.open_btn.clicked.connect(self.show_type_dialog)
+        self.test_btn.clicked.connect(self.show_test_dialog)
         # self.save_btn.clicked.connect(self.rename_folders_excel)
         self.rename_btn.clicked.connect(self.show_rename_dialog)
         self.export_btn.clicked.connect(self.export_to_xlsx)
@@ -81,6 +84,45 @@ class MainWindow(QMainWindow):
         self.folder_signal_connected = False
         self.file_signal_connected = False
         # Status
+
+    def show_test_dialog(self):
+        selected_path = QFileDialog.getExistingDirectory(None, "Select Directory", os.path.expanduser('~'))
+        # Ensure a path was selected
+        if selected_path:
+            self.create_test(selected_path)
+
+    def create_test(self, root_path):
+
+        self.child_dirs = ["TestChild1", "TestChild2", "TestChild3", "TestChild4"]
+        self.grandchild_dirs = ["TestChild5"]
+        self.files = ["testfile.txt", "testfile1.txt", "testfile2.txt", "testfile3.txt", "testfile4.txt", "testfile5.txt"]
+
+        # Create root directory
+        root_dir = os.path.join(root_path, "TestParent")
+        os.makedirs(root_dir, exist_ok=True)
+
+        # Create child directories
+        for child_dir in self.child_dirs:
+            child_path = os.path.join(root_dir, child_dir)
+            os.makedirs(child_path, exist_ok=True)
+
+            # Create grandchild directories
+            if child_dir == "TestChild1":
+                for grandchild_dir in self.grandchild_dirs:
+                    grandchild_path = os.path.join(child_path, grandchild_dir)
+                    os.makedirs(grandchild_path, exist_ok=True)
+
+                    # Create files in grandchild directory
+                    for file in self.files[:2]:
+                        open(os.path.join(grandchild_path, file), 'a').close()
+
+            # Create files in child directories
+            else:
+                for file in self.files[2:]:
+                    open(os.path.join(child_path, file), 'a').close()
+
+        dialog = TestDialog(self)
+        dialog.exec_()
 
     def show_rename_dialog(self):
         if self.model.rowCount() == 0:

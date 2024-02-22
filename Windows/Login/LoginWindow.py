@@ -23,7 +23,6 @@ class LoginWindow(QMainWindow):
         self.closeBtn.clicked.connect(self.closeWindow)
         self.loginBtn.clicked.connect(self.login)
         self.mainwindow = None
-        
     def closeWindow(self):
         self.close()
 

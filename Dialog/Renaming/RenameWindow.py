@@ -23,6 +23,7 @@ class RenameDialog(QDialog):
 
         # radio
         self.custom = self.ui.custom
+        self.ui.custom.setChecked(True)
         self.auto = self.ui.manual
 
         # Connect buttons to functions
