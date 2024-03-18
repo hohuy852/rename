@@ -8,7 +8,9 @@ import requests, os
 load_dotenv()
 
 class LoginWindow(QMainWindow):
+
     username_signal = pyqtSignal(str)
+    
     def __init__(self):
         super(LoginWindow, self).__init__()
 
@@ -23,6 +25,7 @@ class LoginWindow(QMainWindow):
         self.closeBtn.clicked.connect(self.closeWindow)
         self.loginBtn.clicked.connect(self.login)
         self.mainwindow = None
+        
     def closeWindow(self):
         self.close()
 
@@ -37,12 +40,15 @@ class LoginWindow(QMainWindow):
     def login(self):
         username = self.username.text()
         password = self.password.text()
+        
         # Make API call
-        api_url = os.getenv("API_URL")
+        api_url = "https://k02nwn2ep7.execute-api.ap-northeast-1.amazonaws.com/dev/login/"
         data = {'username': username, 'password': password}
+        
         headers = {
             "Content-Type": "application/json"
         }
+
         if not username or not password:
             self.warning.setText("Missing username or password")
             return

@@ -10,12 +10,13 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt, pyqtSignal, QThread
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from App2 import Ui_MainWindow
+from Dialog.Filter.FilterDialog import FilterDialog
 from Dialog.Renaming.RenameWindow import RenameDialog
 from Dialog.Progress.LoadingScreen import LoadingScreen
 from Dialog.Test.TestWindow import TestDialog
 from Dialog.Select.SelectWindow import TypeDialog
 from pathlib import Path
-
+from helpers.valid import is_valid_name, is_valid_path
 
 class LoadFilesThread(QThread):
     progress_updated = pyqtSignal(int)  # Signal to update the progress bar
@@ -70,6 +71,7 @@ class MainWindow(QMainWindow):
         self.username = self.ui.name
         self.rename_btn = self.ui.rename_btn
         self.test_btn = self.ui.test_btn
+        self.filter_btn = self.ui.filter_btn
         # Connect signals and slots
         self.open_btn.clicked.connect(self.show_type_dialog)
         self.test_btn.clicked.connect(self.show_test_dialog)
@@ -77,6 +79,7 @@ class MainWindow(QMainWindow):
         self.rename_btn.clicked.connect(self.show_rename_dialog)
         self.export_btn.clicked.connect(self.export_to_xlsx)
         self.import_btn.clicked.connect(self.import_xlsx)
+        self.filter_btn.clicked.connect(self.show_filter_dialog)
         # Create a standard item model for the table view
         self.model = QStandardItemModel()
         self.table_view.setModel(self.model)
@@ -84,7 +87,7 @@ class MainWindow(QMainWindow):
         self.folder_signal_connected = False
         self.file_signal_connected = False
         # Status
-
+        self.log = self.ui.log
     def show_test_dialog(self):
         selected_path = QFileDialog.getExistingDirectory(None, "Select Directory", os.path.expanduser('~'))
         # Ensure a path was selected
@@ -134,6 +137,9 @@ class MainWindow(QMainWindow):
         dialog.custom_signal.connect(self.rename_folders_excel)
         dialog.exec_()
 
+    def show_filter_dialog(self):
+        dialog = FilterDialog(self)
+        dialog.exec_()
     def rename_confirmation(self, new_name):
         if self.is_file_path():
             self.rename_files(new_name)
@@ -561,8 +567,25 @@ class MainWindow(QMainWindow):
             if headers:
                 self.model.setHorizontalHeaderLabels(headers)
 
-                for row in sheet.iter_rows(min_row=2, values_only=True):
+                for row_num, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=2):
+                    path_value = row[0]
+                    name_value = row[1]
+
+                    if not name_value or not is_valid_name(name_value):  # Check if name is not empty and valid
+                        self.log.append(f"Row {row_num}: Invalid name: {name_value}")
+                        continue  # Skip this row if name is invalid
+
                     new_name_value = row[2] if row[2] is not None else ""
+
+                    # Check if path is valid
+                    if not is_valid_path(path_value, name_value):
+                        self.log.append(f"Row {row_num}: Path and name do not match: {path_value}, {name_value}")
+                        continue  # Skip this row if path and name do not match
+
+                    # Check if path is valid
+                    if os.path.normpath(path_value) != path_value:
+                        self.log.append(f"Row {row_num}: Invalid path: {path_value}")
+                        continue  # Skip this row if path is invalid    
 
                     # Set the data for the new item
                     path_item = QStandardItem(str(row[0]))
@@ -570,7 +593,7 @@ class MainWindow(QMainWindow):
                         str(row[0]), Qt.UserRole + 1
                     )  # Set the path in UserRole+1
 
-                    name_item = QStandardItem(str(row[1]))
+                    name_item = QStandardItem(str(name_value))
                     row_items = [
                         path_item,  # "Path" column
                         name_item,  # "Name" column
@@ -591,3 +614,6 @@ class MainWindow(QMainWindow):
                 )  # New Name column adjusts to content
 
                 workbook.close()
+
+
+
