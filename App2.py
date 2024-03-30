@@ -432,12 +432,6 @@ class Ui_MainWindow(object):
         self.tableView.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
         self.tableView.setObjectName("tableView")
         self.verticalLayout_8.addWidget(self.tableView)
-        self.log = QtWidgets.QTextBrowser(self.frame_3)
-        self.log.setMaximumSize(QtCore.QSize(16777215, 130))
-        self.log.setStyleSheet("border-radius:0;\n"
-"border: 1px solid #000;")
-        self.log.setObjectName("log")
-        self.verticalLayout_8.addWidget(self.log)
         self.verticalLayout_4.addWidget(self.frame_3)
         self.main_2.addWidget(self.main_2Page1_2)
         self.page = QtWidgets.QWidget()
