@@ -15,6 +15,7 @@ from Dialog.Renaming.RenameWindow import RenameDialog
 from Dialog.Progress.LoadingScreen import LoadingScreen
 from Dialog.Test.TestWindow import TestDialog
 from Dialog.Select.SelectWindow import TypeDialog
+from Dialog.Warning.WarningWindow import WarningDialog
 from pathlib import Path
 from helpers.valid import is_valid_name, is_valid_path
 
@@ -192,7 +193,7 @@ class MainWindow(QMainWindow):
         self.model.clear()
 
         # Set up table headers
-        self.model.setHorizontalHeaderLabels(["Path", "Name", "New Name"])
+        self.model.setHorizontalHeaderLabels(["Path", "Name", "New Name"," Error"])
 
         # Set header width to 33% for each column
         header = self.table_view.horizontalHeader()
@@ -204,6 +205,9 @@ class MainWindow(QMainWindow):
         )  # Name column adjusts to content
         header.setSectionResizeMode(
             2, QHeaderView.ResizeToContents
+        )  # New Name column adjusts to content
+        header.setSectionResizeMode(
+            3, QHeaderView.ResizeToContents
         )  # New Name column adjusts to content
         # Recursively iterate through the folder contents
         self.add_folders_to_model(folder_path)
@@ -236,7 +240,7 @@ class MainWindow(QMainWindow):
     def load_files(self, folder_path):
         self.model.clear()
         # Set up table headers
-        self.model.setHorizontalHeaderLabels(["Path", "Name", "New Name"])
+        self.model.setHorizontalHeaderLabels(["Path", "Name", "New Name"," Error"])
 
         # Set header width to 50% for each column
         header = self.table_view.horizontalHeader()
@@ -249,7 +253,9 @@ class MainWindow(QMainWindow):
         header.setSectionResizeMode(
             2, QHeaderView.ResizeToContents
         )  # New Name column adjusts to content
-
+        header.setSectionResizeMode(
+            3, QHeaderView.ResizeToContents
+        )  # New Name column adjusts to content
         # Create and start the thread
         self.load_files_thread = LoadFilesThread(folder_path)
         self.load_files_thread.model = self.model
@@ -540,7 +546,7 @@ class MainWindow(QMainWindow):
             sheet = workbook.active
 
             # Write headers to the Excel file
-            headers = ["Path", "Name", "New Name"]
+            headers = ["Path", "Name", "New Name","Error"]
 
             for col_num, header in enumerate(headers, 1):
                 sheet.cell(row=1, column=col_num, value=header)
@@ -560,67 +566,74 @@ class MainWindow(QMainWindow):
             workbook.save(file_path)
 
     def import_xlsx(self):
-        file_path, _ = QFileDialog.getOpenFileName(
-            self, "Open Excel File", "", "Excel Files (*.xlsx)"
-        )
-        if file_path:
-            workbook = openpyxl.load_workbook(file_path)
-            sheet = workbook.active
+        try:
+            file_path, _ = QFileDialog.getOpenFileName(
+                self, "Open Excel File", "", "Excel Files (*.xlsx)"
+            )
+            warning_dialog = WarningDialog()
+            error_lines = []  # List to store error lines
+            
+            if file_path:
+                workbook = openpyxl.load_workbook(file_path)
+                sheet = workbook.active
 
-            headers = [cell.value for cell in sheet[1]]
+                headers = [cell.value for cell in sheet[1]]
 
-            self.model.clear()
+                self.model.clear()
 
-            if headers:
-                self.model.setHorizontalHeaderLabels(headers)
+                if headers:
+                    self.model.setHorizontalHeaderLabels(headers)
 
-                for row_num, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=2):
-                    path_value = row[0]
-                    name_value = row[1]
+                    for row_num, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=2):
+                        path_value = row[0]
+                        name_value = row[1]
+                        if not name_value or not is_valid_name(name_value):
+                            error_lines.append(f"Row {row_num}: Invalid name: {name_value}")  # Store error line
+                            continue
 
-                    if not name_value or not is_valid_name(name_value):  # Check if name is not empty and valid
-                        print(f"Row {row_num}: Invalid name: {name_value}")
-                        continue  # Skip this row if name is invalid
+                        new_name_value = row[2] if row[2] is not None else ""
 
-                    new_name_value = row[2] if row[2] is not None else ""
+                        if not is_valid_path(path_value, name_value):
+                            error_lines.append(f"Row {row_num}: Path and name do not match: {path_value}, {name_value}")  # Store error line
+                            continue
 
-                    # Check if path is valid
-                    if not is_valid_path(path_value, name_value):
-                        print(f"Row {row_num}: Path and name do not match: {path_value}, {name_value}")
-                        continue  # Skip this row if path and name do not match
+                        if os.path.normpath(path_value) != path_value:
+                            error_lines.append(f"Row {row_num}: Invalid path: {path_value}")  # Store error line
+                            continue
 
-                    # Check if path is valid
-                    if os.path.normpath(path_value) != path_value:
-                        print(f"Row {row_num}: Invalid path: {path_value}")
-                        continue  # Skip this row if path is invalid    
+                        path_item = QStandardItem(str(row[0]))
+                        path_item.setData(
+                            str(row[0]), Qt.UserRole + 1
+                        )
 
-                    # Set the data for the new item
-                    path_item = QStandardItem(str(row[0]))
-                    path_item.setData(
-                        str(row[0]), Qt.UserRole + 1
-                    )  # Set the path in UserRole+1
+                        name_item = QStandardItem(str(name_value))
+                        row_items = [
+                            path_item,
+                            name_item,
+                            QStandardItem(str(new_name_value)),
+                        ]
+                        self.model.appendRow(row_items)
 
-                    name_item = QStandardItem(str(name_value))
-                    row_items = [
-                        path_item,  # "Path" column
-                        name_item,  # "Name" column
-                        QStandardItem(str(new_name_value)),  # "New Name" column
-                    ]
-                    self.model.appendRow(row_items)
+                    header = self.table_view.horizontalHeader()
+                    header.setSectionResizeMode(
+                        0, QHeaderView.Stretch
+                    )
+                    header.setSectionResizeMode(
+                        1, QHeaderView.ResizeToContents
+                    )
+                    header.setSectionResizeMode(
+                        2, QHeaderView.ResizeToContents
+                    )
 
-                # Set header width to 33% for each column
-                header = self.table_view.horizontalHeader()
-                header.setSectionResizeMode(
-                    0, QHeaderView.Stretch
-                )  # Path column takes the remaining space
-                header.setSectionResizeMode(
-                    1, QHeaderView.ResizeToContents
-                )  # Name column adjusts to content
-                header.setSectionResizeMode(
-                    2, QHeaderView.ResizeToContents
-                )  # New Name column adjusts to content
+                    workbook.close()
 
-                workbook.close()
+                # After importing all rows, show warning dialog with error lines
+                if error_lines:
+                    warning_dialog.show_message("\n".join(error_lines))
+        except Exception as e:
+                    # Display a warning box with the exception message
+                    QMessageBox.warning(self, "Error", str(e))
+
 
 
 
