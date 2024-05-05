@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'App-ver2.ui'
+# Form implementation generated from reading ui file './App-ver2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -297,12 +297,23 @@ class Ui_MainWindow(object):
         self.test_btn.setStyleSheet("")
         self.test_btn.setText("")
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap("resource/test.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon8.addPixmap(QtGui.QPixmap(".\\resource/test.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.test_btn.setIcon(icon8)
         self.test_btn.setIconSize(QtCore.QSize(28, 28))
         self.test_btn.setFlat(True)
         self.test_btn.setObjectName("test_btn")
         self.horizontalLayout_2.addWidget(self.test_btn)
+        self.filter_btn = QtWidgets.QPushButton(self.tools)
+        self.filter_btn.setMinimumSize(QtCore.QSize(48, 48))
+        self.filter_btn.setMaximumSize(QtCore.QSize(48, 48))
+        self.filter_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.filter_btn.setStyleSheet("")
+        self.filter_btn.setText("")
+        self.filter_btn.setIcon(icon8)
+        self.filter_btn.setIconSize(QtCore.QSize(28, 28))
+        self.filter_btn.setFlat(True)
+        self.filter_btn.setObjectName("filter_btn")
+        self.horizontalLayout_2.addWidget(self.filter_btn)
         spacerItem1 = QtWidgets.QSpacerItem(704, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem1)
         self.verticalLayout_5.addWidget(self.tools)
@@ -314,8 +325,8 @@ class Ui_MainWindow(object):
         self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_3.setObjectName("frame_3")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.frame_3)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.frame_3)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.tableView = QtWidgets.QTableView(self.frame_3)
         font = QtGui.QFont()
         font.setFamily("Poppins SemiBold")
@@ -414,11 +425,13 @@ class Ui_MainWindow(object):
 "QScrollBar::down-arrow:horizontal {}\n"
 "\n"
 "QScrollBar::add-page:horizontal,\n"
-"QScrollBar::sub-page:horizontal {}")
+"QScrollBar::sub-page:horizontal {}\n"
+"\n"
+"")
         self.tableView.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
         self.tableView.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
         self.tableView.setObjectName("tableView")
-        self.horizontalLayout_3.addWidget(self.tableView)
+        self.verticalLayout_8.addWidget(self.tableView)
         self.verticalLayout_4.addWidget(self.frame_3)
         self.main_2.addWidget(self.main_2Page1_2)
         self.page = QtWidgets.QWidget()

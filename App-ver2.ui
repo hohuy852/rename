@@ -744,6 +744,44 @@ background-color: #fff;
                   </widget>
                  </item>
                  <item>
+                  <widget class="QPushButton" name="filter_btn">
+                   <property name="minimumSize">
+                    <size>
+                     <width>48</width>
+                     <height>48</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>48</width>
+                     <height>48</height>
+                    </size>
+                   </property>
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <normaloff>resource/test.png</normaloff>resource/test.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>28</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="flat">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <spacer name="horizontalSpacer">
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
@@ -789,7 +827,7 @@ background-color: #fff;
              <property name="frameShadow">
               <enum>QFrame::Raised</enum>
              </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <layout class="QVBoxLayout" name="verticalLayout_8">
               <item>
                <widget class="QTableView" name="tableView">
                 <property name="font">
@@ -892,7 +930,9 @@ QScrollBar::up-arrow:horizontal,
 QScrollBar::down-arrow:horizontal {}
 
 QScrollBar::add-page:horizontal,
-QScrollBar::sub-page:horizontal {}</string>
+QScrollBar::sub-page:horizontal {}
+
+</string>
                 </property>
                 <property name="verticalScrollMode">
                  <enum>QAbstractItemView::ScrollPerPixel</enum>

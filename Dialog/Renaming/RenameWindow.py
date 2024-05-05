@@ -1,6 +1,11 @@
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog ,QMessageBox
 from Dialog.Renaming.Rename import Rename_Dialog
 from PyQt5.QtCore import pyqtSignal, Qt
+
+
+def is_valid_name(name):
+    invalid_chars = '\\/:*?"<>|'  # Các ký tự không hợp lệ cho tên tập tin/thư mục trên hệ điều hành Windows
+    return all(char not in invalid_chars for char in name)
 
 class RenameDialog(QDialog):
     confirm_signal = pyqtSignal(str)
@@ -37,6 +42,9 @@ class RenameDialog(QDialog):
 
     def confirm_action(self):
         new_name = self.newName.text()
+        if not is_valid_name(new_name):
+            QMessageBox.warning(self, "Warning", "Invalid name.")
+            return
         if self.custom.isChecked():
             self.custom_signal.emit()
             self.close()
