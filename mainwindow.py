@@ -641,6 +641,7 @@ class MainWindow(QMainWindow):
                     ):
                         path_value = row[0]
                         name_value = row[1]
+                        new_value = row[2]
                         if not name_value or not is_valid_name(name_value):
                             error_item = QStandardItem(f"Invalid name: {name_value}")
                             error_item.setBackground(Qt.red)
@@ -650,15 +651,19 @@ class MainWindow(QMainWindow):
 
                         new_name_value = row[2] if row[2] is not None else ""
 
+                        if not is_valid_name(new_name_value):
+                            error_item = QStandardItem(f"Invalid new name")
+                            error_item.setBackground(Qt.red)
+
                         if not is_valid_path(path_value, name_value):
-                            error_item = QStandardItem(f"Invalid name: {path_value}")
+                            error_item = QStandardItem(f"Path and name do not match")
                             error_item.setBackground(Qt.red)
                             error_lines.append(
                                 f"Row {row_num}: Path and name do not match: {path_value}, {name_value}"
                             )  # Store error line
 
                         if os.path.normpath(path_value) != path_value:
-                            error_item = QStandardItem(f"Invalid name: {path_value}")
+                            error_item = QStandardItem(f"Invalid path")
                             error_item.setBackground(Qt.red)
                             error_lines.append(
                                 f"Row {row_num}: Invalid path: {path_value}"
