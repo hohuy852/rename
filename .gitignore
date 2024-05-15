@@ -7,3 +7,5 @@ build/
 *.db
 *.log
 *.env
+*.key
+credentials.json
