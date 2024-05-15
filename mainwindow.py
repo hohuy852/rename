@@ -89,7 +89,6 @@ class MainWindow(QMainWindow):
         self.username = self.ui.name
         self.rename_btn = self.ui.rename_btn
         self.test_btn = self.ui.test_btn
-        self.filter_btn = self.ui.filter_btn
         # Connect signals and slots
         self.open_btn.clicked.connect(self.show_type_dialog)
         self.test_btn.clicked.connect(self.show_test_dialog)
@@ -97,7 +96,6 @@ class MainWindow(QMainWindow):
         self.rename_btn.clicked.connect(self.show_rename_dialog)
         self.export_btn.clicked.connect(self.export_to_xlsx)
         self.import_btn.clicked.connect(self.import_xlsx)
-        self.filter_btn.clicked.connect(self.show_filter_dialog)
         # Create a standard item model for the table view
         self.model = QStandardItemModel()
         self.table_view.setModel(self.model)
