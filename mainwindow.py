@@ -89,7 +89,6 @@ class MainWindow(QMainWindow):
         self.username = self.ui.name
         self.rename_btn = self.ui.rename_btn
         self.test_btn = self.ui.test_btn
-        self.filter_btn = self.ui.filter_btn
         # Connect signals and slots
         self.open_btn.clicked.connect(self.show_type_dialog)
         self.test_btn.clicked.connect(self.show_test_dialog)
@@ -97,7 +96,6 @@ class MainWindow(QMainWindow):
         self.rename_btn.clicked.connect(self.show_rename_dialog)
         self.export_btn.clicked.connect(self.export_to_xlsx)
         self.import_btn.clicked.connect(self.import_xlsx)
-        self.filter_btn.clicked.connect(self.show_filter_dialog)
         # Create a standard item model for the table view
         self.model = QStandardItemModel()
         self.table_view.setModel(self.model)
@@ -641,25 +639,34 @@ class MainWindow(QMainWindow):
                     ):
                         path_value = row[0]
                         name_value = row[1]
+                        new_value = row[2]
                         if not name_value or not is_valid_name(name_value):
                             error_item = QStandardItem(f"Invalid name: {name_value}")
-                            error_item.setBackground(Qt.red)
+                            error_item.setForeground(Qt.white)  # Set text color to white
+                            error_item.setBackground(QColor(232, 51, 51, 102)) 
                             error_lines.append(
                                 f"Row {row_num}: Invalid name: {name_value}"
                             )  # Store error line'
 
                         new_name_value = row[2] if row[2] is not None else ""
 
+                        if not is_valid_name(new_name_value):
+                            error_item = QStandardItem(f"Invalid new name")
+                            error_item.setForeground(Qt.white)  # Set text color to white
+                            error_item.setBackground(QColor(232, 51, 51, 102)) 
+
                         if not is_valid_path(path_value, name_value):
-                            error_item = QStandardItem(f"Invalid name: {path_value}")
-                            error_item.setBackground(Qt.red)
+                            error_item = QStandardItem(f"Path and name do not match")
+                            error_item.setForeground(Qt.white)  # Set text color to white
+                            error_item.setBackground(QColor(232, 51, 51, 102)) 
                             error_lines.append(
                                 f"Row {row_num}: Path and name do not match: {path_value}, {name_value}"
                             )  # Store error line
 
                         if os.path.normpath(path_value) != path_value:
-                            error_item = QStandardItem(f"Invalid name: {path_value}")
-                            error_item.setBackground(Qt.red)
+                            error_item = QStandardItem(f"Invalid path")
+                            error_item.setForeground(Qt.white)  # Set text color to white
+                            error_item.setBackground(QColor(232, 51, 51, 102)) 
                             error_lines.append(
                                 f"Row {row_num}: Invalid path: {path_value}"
                             )  # Store error line

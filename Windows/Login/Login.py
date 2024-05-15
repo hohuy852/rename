@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Login.ui'
+# Form implementation generated from reading ui file './Login.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -108,7 +108,7 @@ class Login_Window(object):
         self.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.password.setObjectName("password")
         self.loginBtn = QtWidgets.QPushButton(self.widget)
-        self.loginBtn.setGeometry(QtCore.QRect(295, 295, 190, 40))
+        self.loginBtn.setGeometry(QtCore.QRect(295, 310, 190, 40))
         font = QtGui.QFont()
         font.setFamily("Poppins SemiBold")
         font.setPointSize(11)
@@ -157,6 +157,12 @@ class Login_Window(object):
         self.warning.setText("")
         self.warning.setAlignment(QtCore.Qt.AlignCenter)
         self.warning.setObjectName("warning")
+        self.remember = QtWidgets.QCheckBox(self.widget)
+        self.remember.setGeometry(QtCore.QRect(300, 270, 181, 20))
+        font = QtGui.QFont()
+        font.setFamily("Poppins Medium")
+        self.remember.setFont(font)
+        self.remember.setObjectName("remember")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 612, 22))
@@ -175,4 +181,5 @@ class Login_Window(object):
         self.loginBtn.setText(_translate("MainWindow", "L o g  I n"))
         self.label_7.setText(_translate("MainWindow", "Data Tools"))
         self.label_8.setText(_translate("MainWindow", "Copyright to hohuy852"))
+        self.remember.setText(_translate("MainWindow", "Remember me"))
 import Windows.Login.background_rc
