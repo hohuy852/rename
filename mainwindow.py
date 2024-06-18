@@ -1,5 +1,6 @@
 import os
 import openpyxl
+import datetime
 from PyQt5.QtWidgets import (
     QMainWindow,
     QFileDialog,
@@ -394,6 +395,7 @@ class MainWindow(QMainWindow):
             path_item = self.model.item(row, 0)
             name_item = self.model.item(row, 1)
             new_name_item = self.model.item(row, 2)
+            error = self.model.item(row, 3)
 
             old_path = (
                 path_item.data(Qt.UserRole + 1)
@@ -422,9 +424,10 @@ class MainWindow(QMainWindow):
                             os.rename(old_path, new_path)
 
                             # Update the model data
-                            path_item.setData(new_path, Qt.UserRole + 1)
-                            path_item.setText(new_path)
-                            name_item.setText(new_name)
+                            if not (error):
+                                path_item.setData(new_path, Qt.UserRole + 1)
+                                path_item.setText(new_path)
+                                name_item.setText(new_name)
                         except FileExistsError:
                             error_log.append(
                                 {
@@ -469,7 +472,6 @@ class MainWindow(QMainWindow):
             name_item = self.model.item(row, 1)
             new_name_item = self.model.item(row, 2)
             error = self.model.item(row, 3)
-            print (error.text())
             old_path = (
                 path_item.data(Qt.UserRole + 1)
                 if path_item and path_item.data(Qt.UserRole + 1)
@@ -583,16 +585,23 @@ class MainWindow(QMainWindow):
 
         return items
     def export_to_xlsx(self):
+        now = datetime.datetime.now()
+        time_str = now.strftime("%H%M%S")  # Format as hhmmss
+        date_str = now.strftime("%d%m%y")  # Format as ddmmyy
+
+        # Generate the default file name
+        default_filename = f"Template_{time_str}_{date_str}.xlsx"
         file_path, _ = QFileDialog.getSaveFileName(
-            self, "Save Excel File", "", "Excel Files (*.xlsx)"
+            self, "Save Excel File", default_filename, "Excel Files (*.xlsx)"
         )
+        #Template_101706_23022024
         if file_path:
             # Create a new Excel workbook and select the active sheet
             workbook = openpyxl.Workbook()
             sheet = workbook.active
 
             # Write headers to the Excel file
-            headers = ["Path", "Name", "New Name", "Error"]
+            headers = ["Path", "Name", "New Name"]
 
             for col_num, header in enumerate(headers, 1):
                 sheet.cell(row=1, column=col_num, value=header)
