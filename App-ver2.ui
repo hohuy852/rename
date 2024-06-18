@@ -276,42 +276,6 @@ text-align:left;
                </property>
               </widget>
              </item>
-             <item>
-              <widget class="QPushButton" name="pdfcounter_btn">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <family>Poppins SemiBold</family>
-                 <pointsize>10</pointsize>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string>  Pdf Counter</string>
-               </property>
-               <property name="icon">
-                <iconset resource="resource/icons.qrc">
-                 <normaloff>:/icons/folder-menu.png</normaloff>:/icons/folder-menu.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>25</width>
-                 <height>25</height>
-                </size>
-               </property>
-               <property name="flat">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
             </layout>
            </widget>
           </item>
@@ -462,7 +426,7 @@ border-radius: 18px;</string>
          <property name="currentIndex">
           <number>0</number>
          </property>
-         <widget class="QWidget" name="main_2Page1_2">
+         <widget class="QWidget" name="rename">
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <property name="leftMargin">
             <number>0</number>
@@ -909,20 +873,8 @@ QScrollBar::sub-page:horizontal {}
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="page">
-          <widget class="QLabel" name="label_4">
-           <property name="geometry">
-            <rect>
-             <x>440</x>
-             <y>350</y>
-             <width>49</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Page 2</string>
-           </property>
-          </widget>
+         <widget class="QWidget" name="pdf_counter">
+          <layout class="QVBoxLayout" name="verticalLayout_10"/>
          </widget>
         </widget>
        </item>

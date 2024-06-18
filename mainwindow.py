@@ -20,7 +20,6 @@ from Dialog.Warning.WarningWindow import WarningDialog
 from pathlib import Path
 from helpers.valid import is_valid_name, is_valid_path
 
-
 class BackgroundColorDelegate(QStyledItemDelegate):
     def initStyleOption(self, option, index):
         super().initStyleOption(option, index)
@@ -89,6 +88,8 @@ class MainWindow(QMainWindow):
         self.username = self.ui.name
         self.rename_btn = self.ui.rename_btn
         self.test_btn = self.ui.test_btn
+        self.renamer_btn = self.ui.renamer_btn
+        self.views = self.ui.main_2
         # Connect signals and slots
         self.open_btn.clicked.connect(self.show_type_dialog)
         self.test_btn.clicked.connect(self.show_test_dialog)
@@ -103,7 +104,8 @@ class MainWindow(QMainWindow):
         self.folder_signal_connected = False
         self.file_signal_connected = False
         # self.table_view.setItemDelegate(BackgroundColorDelegate())
-        # Status
+        # Tab Views
+        self.rename_view = self.ui.rename
 
     def show_test_dialog(self):
         selected_path = QFileDialog.getExistingDirectory(
@@ -466,7 +468,8 @@ class MainWindow(QMainWindow):
             path_item = self.model.item(row, 0)
             name_item = self.model.item(row, 1)
             new_name_item = self.model.item(row, 2)
-
+            error = self.model.item(row, 3)
+            print (error.text())
             old_path = (
                 path_item.data(Qt.UserRole + 1)
                 if path_item and path_item.data(Qt.UserRole + 1)
@@ -506,11 +509,11 @@ class MainWindow(QMainWindow):
                         try:
                             # Rename the file
                             os.rename(old_path, new_path)
-
-                            # Update the model data
-                            path_item.setData(new_path, Qt.UserRole + 1)
-                            path_item.setText(new_path)
-                            name_item.setText(new_name + new_extension)
+                            if not (error):
+                                # Update the model data
+                                path_item.setData(new_path, Qt.UserRole + 1)
+                                path_item.setText(new_path)
+                                name_item.setText(new_name + new_extension)
                         except FileExistsError:
                             error_log.append(
                                 {
@@ -640,8 +643,9 @@ class MainWindow(QMainWindow):
                         path_value = row[0]
                         name_value = row[1]
                         new_value = row[2]
+                        error_item = QStandardItem()
                         if not name_value or not is_valid_name(name_value):
-                            error_item = QStandardItem(f"Invalid name: {name_value}")
+                            error_item.setText(f"Invalid name: {name_value}")
                             error_item.setForeground(Qt.white)  # Set text color to white
                             error_item.setBackground(QColor(232, 51, 51, 102)) 
                             error_lines.append(
@@ -651,12 +655,12 @@ class MainWindow(QMainWindow):
                         new_name_value = row[2] if row[2] is not None else ""
 
                         if not is_valid_name(new_name_value):
-                            error_item = QStandardItem(f"Invalid new name")
+                            error_item.setText(f"Invalid new name")
                             error_item.setForeground(Qt.white)  # Set text color to white
                             error_item.setBackground(QColor(232, 51, 51, 102)) 
 
                         if not is_valid_path(path_value, name_value):
-                            error_item = QStandardItem(f"Path and name do not match")
+                            error_item.setText(f"Path and name do not match")
                             error_item.setForeground(Qt.white)  # Set text color to white
                             error_item.setBackground(QColor(232, 51, 51, 102)) 
                             error_lines.append(
@@ -664,13 +668,18 @@ class MainWindow(QMainWindow):
                             )  # Store error line
 
                         if os.path.normpath(path_value) != path_value:
-                            error_item = QStandardItem(f"Invalid path")
+                            error_item.setText(f"Invalid path")
                             error_item.setForeground(Qt.white)  # Set text color to white
                             error_item.setBackground(QColor(232, 51, 51, 102)) 
                             error_lines.append(
                                 f"Row {row_num}: Invalid path: {path_value}"
                             )  # Store error line
-
+                        # Check if path actually exists
+                        if not os.path.exists(path_value):
+                            error_item.setText(f"Path does not exist")
+                            error_item.setForeground(Qt.white)  # Set text color to white
+                            error_item.setBackground(QColor(232, 51, 51, 102))
+                            error_lines.append(f"Row {row_num}: Path does not exist: {path_value}")
                         # Create QStandardItem for each column
                         path_item = QStandardItem(str(row[0]))
                         path_item.setData(str(row[0]), Qt.UserRole + 1)
